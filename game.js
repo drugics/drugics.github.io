@@ -41,10 +41,10 @@ var gameOptions = {
      levelColors: [0xe81d62, 0x9b26af, 0x2095f2, 0x4bae4f, 0xfeea3a, 0x795548, 0x5f7c8a],
      
      // local storage name, it's the variable we will be using to save game information such as best score
-     localStorageName: "justjumpgame",
+     localStorageName: "jumpjumpgame",
      
      // just a string with version number to be displayed
-     version: "1.1m"
+     version: "0.1"
 }
 
 // when the window loads
@@ -274,7 +274,7 @@ TheGame.prototype = {
           this.demoGroup.add(blackOverlay);
           
           // adding a bitmap text with game title
-          var titleText = game.add.bitmapText(game.width / 2, game.height / 5, "font", "Just Jump", 48);
+          var titleText = game.add.bitmapText(game.width / 2, game.height / 5, "font", "Jump Jump", 48);
           
           // setting titleText anchor point to 0.5 (the centre)
           titleText.anchor.set(0.5);
@@ -283,7 +283,7 @@ TheGame.prototype = {
           this.demoGroup.add(titleText);
           
           // same thing goes with infoText
-          var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Tap / Click to jump", 24);
+          var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Space / Tap / Click to jump", 24);
           infoText.anchor.set(0.5, 0.5);
           this.demoGroup.add(infoText);
           
@@ -303,11 +303,11 @@ TheGame.prototype = {
           versionText.anchor.set(1, 1);
           this.demoGroup.add(versionText);
           
-          // waiting for player input, then call squareJump function
-          game.input.onDown.add(this.squareJump, this);
+          // waiting for player input, then call startRunning function
+          game.input.onDown.add(this.startRunning, this);
 
 	    var key1 = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-	 key1.onDown.add(this.squareJump, this);
+	 key1.onDown.add(this.startRunning, this);
      },
      
      // function to be executed at each frame
@@ -335,7 +335,7 @@ TheGame.prototype = {
                     }, this);
                     
                     // do not wait any longer for input
-            //        game.input.onDown.remove(this.squareJump, this);
+            //        game.input.onDown.remove(this.heroJump, this);
                     
                     // play explosion sound
                     this.explosionSound.play();
@@ -363,7 +363,7 @@ TheGame.prototype = {
                       ){
                          
                          // se the hero jump!!
-                         this.squareJump();
+                         this.heroJump();
                     }
                }          
           }     
@@ -517,32 +517,9 @@ TheGame.prototype = {
      },
      
      // when the player jumps
-     squareJump: function(e){
+     heroJump: function(e){
      
-          // we want e not to be undefined and demo to be true to say the player touched the screen
-          // or clicked to mouse to start playinh
-          if(e != undefined && this.demo){
-          
-               // not a demo anymore
-               this.demo = false;
-               
-               // destroying demoGroup and its content, removing titles, overlay, and everything not
-               // strictly related to the game 
-               this.demoGroup.destroy();
-               
-               // starting from first floor
-               this.levelFloor = -1;
-               
-               // resetting the score
-               this.score = 0;
-               
-               // placing the square
-               this.placeSquare();
-               
-               // no more else to do
-               return;
-          }
-          
+        
           // if the hero can jump...
           if(this.theSquare.canJump){
           
@@ -567,5 +544,40 @@ TheGame.prototype = {
                     this.jumpSound.play();
             //   }
           }
+     },
+     
+     startRunning: function(e){
+     
+          // we want e not to be undefined and demo to be true to say the player touched the screen
+          // or clicked to mouse to start playinh
+          if(e != undefined && this.demo){
+          
+               // not a demo anymore
+               this.demo = false;
+               
+               // destroying demoGroup and its content, removing titles, overlay, and everything not
+               // strictly related to the game 
+               this.demoGroup.destroy();
+               
+               // starting from first floor
+               this.levelFloor = -1;
+               
+               // resetting the score
+               this.score = 0;
+               
+               // placing the square
+               this.placeSquare();
+
+		// waiting for player input, then call startRunning function
+		game.input.onDown.add(this.heroJump, this);
+
+		var key1 = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		key1.onDown.add(this.heroJump, this);
+
+               
+               // no more else to do
+               return;
+          }
+
      }    
 }
