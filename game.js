@@ -20,31 +20,25 @@ var gameOptions = {
      spikesAmount: 4,
      
      // height of each spike
-     spikeHeight: 8,
+     spikeHeight: 3,
      
      // horizontal speed of the hero
      squareSpeed: 210,
      
      // game gravity
-     squareGravity: 4000,
+     squareGravity: 3600,
      
      // force to be applied at each jump
-     jumpForce: -600,
-
-     //...with this force and gravity
-     demoJumpBeforeApprox: 32,
-     
-     // jump rotate tween length, in milliseconds 
-     jumpTime: 400,
-     
+     jumpForce: -320,
+          
      // colors used in the game
-     levelColors: [0xe81d62, 0x9b26af, 0x2095f2, 0x4bae4f, 0xfeea3a, 0x795548, 0x5f7c8a],
+     levelColors: [0xf7f718, 0x42e828, 0x6e6bfc, 0xf31f1f],
      
      // local storage name, it's the variable we will be using to save game information such as best score
-     localStorageName: "justjumpgame",
+     localStorageName: "jumpjumpgame",
      
      // just a string with version number to be displayed
-     version: "1.1m"
+     version: "0.1"
 }
 
 // when the window loads
@@ -90,7 +84,8 @@ TheGame.prototype = {
           
           // preloading the only game assets, a tile which will be used both for the square and the floor
 	game.load.image("tile", "assets/sprites/tile.png"); 
-	game.load.spritesheet('player', 'assets/sprites/heroine.png', 16, 16);
+//	game.load.spritesheet('player', 'assets/sprites/heroine.png', 16, 16);
+	game.load.spritesheet('player', 'assets/sprites/hero01.png', 16, 16);
          
           // preloading the bitmap font, generated with Littera bitmap font generator
           game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
@@ -99,6 +94,7 @@ TheGame.prototype = {
           game.load.audio("jump", "assets/sounds/taikoC.ogg");
           game.load.audio("main", "assets/sounds/ww.ogg");
           game.load.audio("explosion", "assets/sounds/explosion.mp3");     
+          game.load.audio("120bpm", "assets/sounds/120bpm.ogg");     
      }, 
      
      // once the state is ready
@@ -111,19 +107,14 @@ TheGame.prototype = {
           this.jumpSound = game.add.audio("jump");
           this.explosionSound = game.add.audio("explosion");
           this.mainSound = game.add.audio("main");
-          var length = 8;
+          this.main120bpmSound = game.add.audio("120bpm");
+          var length = 32;
           var start = 0;
-          for (var i = 0; i<=3; i++)
+          for (var i = 0; i<=0; i++) //most csak egy
           {
-               this.mainSound.addMarker('sor'+i, start, length);
+               this.mainSound.addMarker('sheet'+i, start, length);
                start += length;
           }
-          // variable to tell us if we are in demo mode, that is when the square jumps automatically
-          this.demo = true;
-          
-          // variable to tell us if it's game over
-          this.gameOver = false;
-          
           // in this array we will store floor colors
           this.floorColors = [];
           
@@ -156,7 +147,8 @@ TheGame.prototype = {
 	this.theSquare = game.add.sprite(48, 48, 'player', 1);
 	this.theSquare.smoothed = false;
 	this.theSquare.scale.set(2);
-	this.theSquare.animations.add('right', [1,2,3,4], 16, true);
+//	this.theSquare.animations.add('right', [1,2,3,4], 16, true);
+	this.theSquare.animations.add('right', [0,1,2,3], 16, true);
 
 	// setting hero registration point
 	this.theSquare.anchor.set(0.5);
@@ -165,13 +157,13 @@ TheGame.prototype = {
           this.theSquare.canJump = true;
           
           // enabling ARCADE physics on the hero
-          game.physics.enable(this.theSquare, Phaser.Physics.ARCADE);
+   //       game.physics.enable(this.theSquare, Phaser.Physics.ARCADE);
           
           // setting hero horizontal velocity
-          this.theSquare.body.velocity.x = gameOptions.squareSpeed;
+     //     this.theSquare.body.velocity.x = 0;
           
           // gravity applied to the square
-          this.theSquare.body.gravity.y = gameOptions.squareGravity;
+     //     this.theSquare.body.gravity.y = gameOptions.squareGravity;
           
           // a custom attribute to tell the player which color we are going to use at each floor
           this.theSquare.squareColor = [];
@@ -227,10 +219,10 @@ TheGame.prototype = {
                floor.alpha = 0.5;
                
                // let's enable ARCADE physics on floors too
-               game.physics.enable(floor, Phaser.Physics.ARCADE);
+       //        game.physics.enable(floor, Phaser.Physics.ARCADE);
                
                // floors can't move
-               floor.body.immovable = true;
+       //        floor.body.immovable = true;
                
                // adding the floor to ground group
                this.groundGroup.add(floor);
@@ -253,11 +245,11 @@ TheGame.prototype = {
           this.emitter.minParticleScale = 0.05; 
           
           // finally placing the hero
-          this.placeSquare();
+        //  this.putHeroToTheFloor(0);
  
           
-          // creation of a new group which will contain all demo elements               
-          this.demoGroup = game.add.group();
+          // creation of a new group which will contain all startScreen elements               
+          this.startScreenGroup = game.add.group();
      
           // we start with an overlay covering the entire game area
           var blackOverlay = game.add.sprite(0, 0, "tile");
@@ -270,22 +262,22 @@ TheGame.prototype = {
           // setting the overlay 70% opaque
           blackOverlay.alpha = 0.7;
           
-          // adding blackOverlay to demoGroup group
-          this.demoGroup.add(blackOverlay);
+          // adding blackOverlay to startScreenGroup group
+          this.startScreenGroup.add(blackOverlay);
           
           // adding a bitmap text with game title
-          var titleText = game.add.bitmapText(game.width / 2, game.height / 5, "font", "Just Jump", 48);
+          var titleText = game.add.bitmapText(game.width / 2, game.height / 5, "font", "Jump Jump", 48);
           
           // setting titleText anchor point to 0.5 (the centre)
           titleText.anchor.set(0.5);
           
-          // adding titleText to demoGroup group
-          this.demoGroup.add(titleText);
+          // adding titleText to startScreenGroup group
+          this.startScreenGroup.add(titleText);
           
           // same thing goes with infoText
-          var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Tap / Click to jump", 24);
+          var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Space / Tap / Click to jump", 24);
           infoText.anchor.set(0.5, 0.5);
-          this.demoGroup.add(infoText);
+          this.startScreenGroup.add(infoText);
           
           // if you still haven't played the game, set score variable to zero
           if(!this.score){
@@ -296,125 +288,79 @@ TheGame.prototype = {
           var scoresText = game.add.bitmapText(game.width / 2, game.height / 5 * 4, "font", "Latest score\n" + this.score.toString() + "\n\nBest score\n" + this.savedData.score.toString(), 24);
           scoresText.anchor.set(0.5, 0.5);
           scoresText.align = "center";
-          this.demoGroup.add(scoresText);
+          this.startScreenGroup.add(scoresText);
           
           // last but not least, let's add version text
           var versionText = game.add.bitmapText(game.width, game.height, "font", "v" + gameOptions.version, 24);
           versionText.anchor.set(1, 1);
-          this.demoGroup.add(versionText);
+          this.startScreenGroup.add(versionText);
           
-          // waiting for player input, then call squareJump function
-          game.input.onDown.add(this.squareJump, this);
+          // waiting for player input, then call startRunning function
+          game.input.onDown.addOnce(this.startRunning, this);
 
-	    var key1 = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-	 key1.onDown.add(this.squareJump, this);
      },
      
      // function to be executed at each frame
      update: function(){
-     
-          // is the game over?
-          if(!this.gameOver){
-          
-               // making the hero collide with floors so it won't fallo down
-               game.physics.arcade.collide(this.theSquare, this.groundGroup);
+
+	this.theSquare.x += 4;
+/*     
+	// making the hero collide with floors so it won't fall down
+	game.physics.arcade.collide(this.theSquare, this.groundGroup);
+
+	// checking if the hero overlaps with anything in spike group
+	game.physics.arcade.overlap(this.theSquare, this.spikeGroup, function(){
+
+	    // placing the emitter over the player
+	    this.emitter.x = this.theSquare.x;
+	    this.emitter.y = this.theSquare.y;
+	    
+	    // firing 10 particles at once with a 1000 milliseconds lifespan
+	    this.emitter.start(true, 1000, null, 10);
+	    
+	    // tinting particles with the same player color
+	    this.emitter.forEach(function(particle) {
+		 particle.tint = this.theSquare.tint;
+	    }, this);
+	    
+	    // play explosion sound
+	    //this.explosionSound.play();
+	    //this.score += 100;
+	    
+		  
+	}, null, this);
+		      
+
+	// we'll enter this block if the hero just landed, that is it's touching its bottom side and it can't jump yet 
+	if(!this.theSquare.canJump && this.theSquare.body.touching.down){
+
+	    // now the hero can jump again
+	    this.theSquare.canJump = true; 
+	}
+*/
                
-               // checking if the hero overlaps with anything in spike group
-               game.physics.arcade.overlap(this.theSquare, this.spikeGroup, function(){
-               
-                    // placing the emitter over the player
-                    this.emitter.x = this.theSquare.x;
-                    this.emitter.y = this.theSquare.y;
-                    
-                    // firing 10 particles at once with a 1000 milliseconds lifespan
-                    this.emitter.start(true, 1000, null, 10);
-                    
-                    // tinting particles with the same player color
-                    this.emitter.forEach(function(particle) {
-                         particle.tint = this.theSquare.tint;
-                    }, this);
-                    
-                    // do not wait any longer for input
-            //        game.input.onDown.remove(this.squareJump, this);
-                    
-                    // play explosion sound
-                    this.explosionSound.play();
-		this.score += 100;
-                    
-                          
-               }, null, this);
-                              
-              
-               // we'll enter this block if the hero just landed, that is it's touching its bottom side and it can't jump yet 
-               if(!this.theSquare.canJump && this.theSquare.body.touching.down){
-               
-                    // now the hero can jump again
-                    this.theSquare.canJump = true; 
-               }
-               
-               // if this is the demo...
-               if(this.demo){
-                    
-                    // if there are spikes ahead the hero and we are close enough to next spike to allow hero to jump it...
-                    if(Math.abs(this.theSquare.x - 105 ) < 5
-			|| Math.abs(this.theSquare.x - 315 ) < 5
-			|| Math.abs(this.theSquare.x - 525 ) < 5
-			|| Math.abs(this.theSquare.x - 735 ) < 5
-                      ){
-                         
-                         // se the hero jump!!
-                         this.squareJump();
-                    }
-               }          
-          }     
      },
      
      // when the player starts running on a floor
-     placeSquare: function(){
+     putHeroToTheFloor: function(floorToGo){
 
-                    
-	// increasing floor number or setting it back to zero
-	++this.levelFloor; 
-
-	if(this.levelFloor >= gameOptions.floorY.length)
-	{
-		          // game over, man!!
-	    this.gameOver = true; 
-	    
-	    // updating localstorage setting score as the max value between current score and saved score
-	    localStorage.setItem(gameOptions.localStorageName,JSON.stringify({
-		 score: Math.max(this.score, this.savedData.score)
-	  }));                 
-	    
-	    // wait ... seconds before restarting the game
-	    game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-		 game.state.start("TheGame");     
-	    }, this);
-		return;
-
-	}                  
-
-	// start the next floor after ... sec
-	game.time.events.add(Phaser.Timer.SECOND * 8, this.placeSquare, this);
+ 
 
 
-     
-	this.mainSound.play('sor'+this.levelFloor);
+	// properly tint the square according to floor number
+	// this.theSquare.tint = this.floorColors[this.levelFloor];
 
-          // properly tint the square according to floor number
-         // this.theSquare.tint = this.floorColors[this.levelFloor];
-          
-		this.theSquare.body.velocity.x =  gameOptions.squareSpeed;
-		this.theSquare.play('right');
+//	this.theSquare.body.velocity.x =  gameOptions.squareSpeed;
+	this.theSquare.play('right');
 
           // no vertical velocity
-          this.theSquare.body.velocity.y = 0;
+//          this.theSquare.body.velocity.y = 0;
           
           // the hero can jump again 
           this.theSquare.canjump = true; 
           
           // adjusting hero vertical and horizontal position
-          this.theSquare.y = gameOptions.floorY[this.levelFloor] - 32;
+          this.theSquare.y = gameOptions.floorY[floorToGo] - 22;
           this.theSquare.x = 0;   
           
           // stopping the jump tween if running
@@ -434,10 +380,10 @@ TheGame.prototype = {
           for(var i = 1; i <= gameOptions.spikesAmount; i++){
           
                // creating the spike as a tileSprite
-               var spike = game.add.sprite(0, gameOptions.floorY[floor] - 64, "tile");
+               var spike = game.add.sprite(0, gameOptions.floorY[floor] , "tile");
                spike.height = gameOptions.spikeHeight;
                spike.width = 4;
-               spike.x = 105 + 210 * (i-1) + gameOptions.demoJumpBeforeApprox;
+               spike.x = 105 + 210 * (i-1);
                
                // applying spikes the same tint color used for the ground
                spike.tint = this.floorColors[floor];
@@ -449,10 +395,10 @@ TheGame.prototype = {
                spike.anchor.set(0.5, 1);
                
                // enabling ARCADE physics to the spike
-               game.physics.enable(spike, Phaser.Physics.ARCADE);
+       //        game.physics.enable(spike, Phaser.Physics.ARCADE);
                
                // spikes can't move
-               spike.body.immovable = true;
+       //        spike.body.immovable = true;
                
                // adding the spike to spike group
                this.spikeGroup.add(spike);
@@ -483,66 +429,11 @@ TheGame.prototype = {
               			
           }
      },
-// nem használom...     
-     moveSpikes: function(floor){
-     
-          // the first obstacle will be placed at 180 if we are on aneven floor, game.width - 180 if we are on an odd floor
-          var obstacleX = 210;
-          
-          // looping through all obstacles in this floor
-          for(var i = 0; i < this.floorSpikes[floor].length; i++){
-          
-               // assigning a new width to the obstacle
-               var newWidth = 4; //game.rnd.integerInRange(1, 16) * 2;
-          
-               // adjusting spike physical body size
-               this.floorSpikes[floor][i].body.setSize(newWidth, this.floorSpikes[floor][i].height);  
-               
-               // re-positioning score text accordingly
-               this.floorScores[floor][i].x = obstacleX;
-               this.floorScores[floor][i].visible = false;
-          
-               // placing next obstacle between 150 and 200 pixels
-               var obstacleGap = 210 // game.rnd.integerInRange(150, 200);
-               
-               // moving and resizing the obstacle with a tween
-               var obstacleTween = game.add.tween(this.floorSpikes[floor][i]).to({
-                    x: obstacleX,
-                    width: newWidth 
-               }, 250, Phaser.Easing.Linear.None, true)
-               
-               // determining next obstacle position
-               obstacleX += obstacleGap;                      
-          }          
-     },
-     
+
      // when the player jumps
-     squareJump: function(e){
+     heroJump: function(e){
      
-          // we want e not to be undefined and demo to be true to say the player touched the screen
-          // or clicked to mouse to start playinh
-          if(e != undefined && this.demo){
-          
-               // not a demo anymore
-               this.demo = false;
-               
-               // destroying demoGroup and its content, removing titles, overlay, and everything not
-               // strictly related to the game 
-               this.demoGroup.destroy();
-               
-               // starting from first floor
-               this.levelFloor = -1;
-               
-               // resetting the score
-               this.score = 0;
-               
-               // placing the square
-               this.placeSquare();
-               
-               // no more else to do
-               return;
-          }
-          
+        
           // if the hero can jump...
           if(this.theSquare.canJump){
           
@@ -552,20 +443,65 @@ TheGame.prototype = {
                // adding a vertical force to the player
                this.theSquare.body.velocity.y = gameOptions.jumpForce;
                
-               // setting a jump rotation angle just to make the square rotate
-               var jumpAngle = 360;
-               
-               // using a tween to rotate the player
-               this.jumpTween = game.add.tween(this.theSquare).to({
-                    angle: this.theSquare.angle + jumpAngle
-               }, gameOptions.jumpTime, Phaser.Easing.Linear.None, true);
-               
-               // if this is not a demo...
-          //     if(!this.demo){
                
                     // playing jump sound
                     this.jumpSound.play();
-            //   }
           }
-     }    
+     },
+     
+     startRunning: function(e){
+     
+               
+               // destroying startScreenGroup and its content, removing titles, overlay, and everything not
+               // strictly related to the game 
+               this.startScreenGroup.destroy();
+                              
+               // resetting the score
+               this.score = 0;
+               
+               this.putHeroToTheFloor(0);
+    
+		//this.mainSound.play('sheet0');
+		//this.main120bpmSound.play({ loop : true });
+		this.main120bpmSound.play();
+
+		// start the next floor after ... sec
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 1 , function(){
+			this.putHeroToTheFloor(1);
+		}, this);
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 2 , function(){
+			this.putHeroToTheFloor(2);
+		}, this);
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 3 , function(){
+			this.putHeroToTheFloor(3);
+		}, this);
+
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 4 ,this.stopRunning, this);
+
+
+		// waiting for player input, then call startRunning function
+		game.input.onDown.add(this.heroJump, this);
+
+		var key1 = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		key1.onDown.add(this.heroJump, this);
+
+
+     },
+
+	stopRunning: function(){
+	    
+	    // updating localstorage setting score as the max value between current score and saved score
+	    localStorage.setItem(gameOptions.localStorageName,JSON.stringify({
+		 score: Math.max(this.score, this.savedData.score)
+	  }));                 
+	    
+	    // wait ... seconds before restarting the game
+	    game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+		 game.state.start("TheGame");     
+	    }, this);
+	
+
+	                  
+
+	}   
 }
