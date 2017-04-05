@@ -111,11 +111,11 @@ TheGame.prototype = {
           this.jumpSound = game.add.audio("jump");
           this.explosionSound = game.add.audio("explosion");
           this.mainSound = game.add.audio("main");
-          var length = 8;
+          var length = 32;
           var start = 0;
-          for (var i = 0; i<=3; i++)
+          for (var i = 0; i<=0; i++) //most csak egy
           {
-               this.mainSound.addMarker('sor'+i, start, length);
+               this.mainSound.addMarker('sheet'+i, start, length);
                start += length;
           }
           // variable to tell us if we are in demo mode, that is when the square jumps automatically
@@ -168,7 +168,7 @@ TheGame.prototype = {
           game.physics.enable(this.theSquare, Phaser.Physics.ARCADE);
           
           // setting hero horizontal velocity
-          this.theSquare.body.velocity.x = gameOptions.squareSpeed;
+          this.theSquare.body.velocity.x = 0;
           
           // gravity applied to the square
           this.theSquare.body.gravity.y = gameOptions.squareGravity;
@@ -253,7 +253,7 @@ TheGame.prototype = {
           this.emitter.minParticleScale = 0.05; 
           
           // finally placing the hero
-          this.placeSquare();
+        //  this.putHeroToTheFloor(0);
  
           
           // creation of a new group which will contain all demo elements               
@@ -304,16 +304,13 @@ TheGame.prototype = {
           this.demoGroup.add(versionText);
           
           // waiting for player input, then call startRunning function
-          game.input.onDown.add(this.startRunning, this);
+          game.input.onDown.addOnce(this.startRunning, this);
 
-	    var key1 = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-	 key1.onDown.add(this.startRunning, this);
      },
      
      // function to be executed at each frame
      update: function(){
      
-          // is the game over?
           if(!this.gameOver){
           
                // making the hero collide with floors so it won't fallo down
@@ -370,42 +367,16 @@ TheGame.prototype = {
      },
      
      // when the player starts running on a floor
-     placeSquare: function(){
+     putHeroToTheFloor: function(floorToGo){
 
-                    
-	// increasing floor number or setting it back to zero
-	++this.levelFloor; 
-
-	if(this.levelFloor >= gameOptions.floorY.length)
-	{
-		          // game over, man!!
-	    this.gameOver = true; 
-	    
-	    // updating localstorage setting score as the max value between current score and saved score
-	    localStorage.setItem(gameOptions.localStorageName,JSON.stringify({
-		 score: Math.max(this.score, this.savedData.score)
-	  }));                 
-	    
-	    // wait ... seconds before restarting the game
-	    game.time.events.add(Phaser.Timer.SECOND * 1, function(){
-		 game.state.start("TheGame");     
-	    }, this);
-		return;
-
-	}                  
-
-	// start the next floor after ... sec
-	game.time.events.add(Phaser.Timer.SECOND * 8, this.placeSquare, this);
+ 
 
 
-     
-	this.mainSound.play('sor'+this.levelFloor);
+	// properly tint the square according to floor number
+	// this.theSquare.tint = this.floorColors[this.levelFloor];
 
-          // properly tint the square according to floor number
-         // this.theSquare.tint = this.floorColors[this.levelFloor];
-          
-		this.theSquare.body.velocity.x =  gameOptions.squareSpeed;
-		this.theSquare.play('right');
+	this.theSquare.body.velocity.x =  gameOptions.squareSpeed;
+	this.theSquare.play('right');
 
           // no vertical velocity
           this.theSquare.body.velocity.y = 0;
@@ -414,7 +385,7 @@ TheGame.prototype = {
           this.theSquare.canjump = true; 
           
           // adjusting hero vertical and horizontal position
-          this.theSquare.y = gameOptions.floorY[this.levelFloor] - 32;
+          this.theSquare.y = gameOptions.floorY[floorToGo] - 32;
           this.theSquare.x = 0;   
           
           // stopping the jump tween if running
@@ -550,7 +521,7 @@ TheGame.prototype = {
      
           // we want e not to be undefined and demo to be true to say the player touched the screen
           // or clicked to mouse to start playinh
-          if(e != undefined && this.demo){
+   //       if(e != undefined && this.demo){
           
                // not a demo anymore
                this.demo = false;
@@ -558,15 +529,27 @@ TheGame.prototype = {
                // destroying demoGroup and its content, removing titles, overlay, and everything not
                // strictly related to the game 
                this.demoGroup.destroy();
-               
-               // starting from first floor
-               this.levelFloor = -1;
-               
+                              
                // resetting the score
                this.score = 0;
                
-               // placing the square
-               this.placeSquare();
+               this.putHeroToTheFloor(0);
+    
+		this.mainSound.play('sheet0');
+
+		// start the next floor after ... sec
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 1 , function(){
+			this.putHeroToTheFloor(1);
+		}, this);
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 2 , function(){
+			this.putHeroToTheFloor(2);
+		}, this);
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 3 , function(){
+			this.putHeroToTheFloor(3);
+		}, this);
+
+		game.time.events.add(Phaser.Timer.SECOND * 8 * 4 ,this.stopRunning, this);
+
 
 		// waiting for player input, then call startRunning function
 		game.input.onDown.add(this.heroJump, this);
@@ -574,10 +557,26 @@ TheGame.prototype = {
 		var key1 = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		key1.onDown.add(this.heroJump, this);
 
-               
-               // no more else to do
-               return;
-          }
 
-     }    
+     },
+
+	stopRunning: function(){
+
+		//??köll
+//	    this.gameOver = true; 
+	    
+	    // updating localstorage setting score as the max value between current score and saved score
+	    localStorage.setItem(gameOptions.localStorageName,JSON.stringify({
+		 score: Math.max(this.score, this.savedData.score)
+	  }));                 
+	    
+	    // wait ... seconds before restarting the game
+	    game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+		 game.state.start("TheGame");     
+	    }, this);
+	
+
+	                  
+
+	}   
 }
