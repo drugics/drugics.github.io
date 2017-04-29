@@ -26,7 +26,7 @@ var gameOptions = {
      squareSpeed: 210,
      
      // game gravity
-     squareGravity: 3000,
+     squareGravity: 5000,
      
      // force to be applied at each jump
      jumpForce: -600,
