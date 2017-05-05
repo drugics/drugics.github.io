@@ -32,7 +32,7 @@ var gameOptions = {
      jumpForce: -320,
           
      // colors used in the game
-     levelColors: [0xe81d62, 0x9b26af, 0x2095f2, 0x4bae4f, 0xfeea3a, 0x795548, 0x5f7c8a],
+     levelColors: [0xe81d62, 0x9b26af, 0x2095f2, 0x4bae4f, 0x1111ff],
      
      // local storage name, it's the variable we will be using to save game information such as best score
      localStorageName: "jumpjumpgame",
