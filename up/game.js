@@ -31,6 +31,8 @@ window.onload = function() {
   // adding game state
   game.state.add("TheGame", TheGame);
 
+  //what does this switch do? :) slows down in FF without it
+  game.forceSingleUpdate=false;
   // starting game state
   game.state.start("TheGame");
 }
@@ -96,7 +98,6 @@ TheGame.prototype = {
     //physics param
     this.spring_constant = 8;
     this.fast_collision_from_amax = 10; //??
-    //this.resistance = 0.9999;
 
     //whitehole
     this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
@@ -105,7 +106,7 @@ TheGame.prototype = {
 
     //rockvectsprite
     this.rockvectsprite = game.add.sprite(48, 248, 'rockvectsprite', 2);
-    this.rockvectsprite.scale.set(1.5);
+    this.rockvectsprite.scale.set(2);
     this.rockvectsprite.tint = 0x5e2200;
     this.rockvectsprite.animations.add('right', [8,9,10,11,12,13,14,15,4,5,6], 12, true);
     this.rockvectsprite.animations.add('left', [6,5,4,15,14,13,12,11,10,9,8], 12, true);
@@ -113,7 +114,7 @@ TheGame.prototype = {
     this.rockvectsprite.anchor.set(0.5);
     this.rockvectsprite.play('left');
 
-    this.rockvectsprite.radius = 30;
+    this.rockvectsprite.radius = 48;
     this.rockvectsprite.mass = 2;
     this.rockvectsprite.vx = 1;
     this.rockvectsprite.vy = 2;
@@ -121,14 +122,14 @@ TheGame.prototype = {
 
     //rockvectsprite2
     this.rockvectsprite2 = game.add.sprite(148, 48, 'rockvectsprite2', 2);
-    this.rockvectsprite2.scale.set(1.5);
+    this.rockvectsprite2.scale.set(2);
     this.rockvectsprite2.tint = 0xd70000;
     this.rockvectsprite2.animations.add('right', [0,1,2,3],12, true);
     // setting registration point
     this.rockvectsprite2.anchor.set(0.5);
     this.rockvectsprite2.play('right');
 
-    this.rockvectsprite2.radius = 30;
+    this.rockvectsprite2.radius = 48;
     this.rockvectsprite2.mass = 2;
     this.rockvectsprite2.vx = 1;
     this.rockvectsprite2.vy = 2;
@@ -137,7 +138,7 @@ TheGame.prototype = {
 
     //rockvectsprite3
     this.rockvectsprite3 = game.add.sprite(68, 88, 'rockvectsprite3', 2);
-    this.rockvectsprite3.scale.set(3);
+    this.rockvectsprite3.scale.set(2);
     this.rockvectsprite3.tint = 0xd86e00;
     this.rockvectsprite3.animations.add('right', [0,1,2,3,2,1],12, true);
     // setting registration point
@@ -160,7 +161,7 @@ TheGame.prototype = {
     // setting player registration point
     this.thePlayer.anchor.set(0.5);
 
-    this.thePlayer.radius = 20;
+    this.thePlayer.radius = 32;
     this.thePlayer.mass = 1;
     this.thePlayer.vx = 0;
     this.thePlayer.vy = 0;
@@ -233,7 +234,8 @@ TheGame.prototype = {
   update: function(){
     if(this.isTheGameRunning){
       //control the player
-      acc = 0.2;
+      acc = 0.05;
+      this.score++;
       if (upKey.isDown || this.upbuttonpressed == true)
       {
         this.thePlayer.vy-=acc;
@@ -257,7 +259,7 @@ TheGame.prototype = {
       }
 
       //rotate the whitehole
-      this.whitehole.angle -= 2;
+      this.whitehole.angle -= 0.5;
 
       this.actualScoreText.text = this.score
 
@@ -408,15 +410,15 @@ TheGame.prototype = {
 
         // wall
         if (item.x > game.width) {
-          item.vx = -1;
+          item.vx = -Math.abs(item.vx)*0.8;
         } else if (item.x < 0) {
-          item.vx = 1;
+          item.vx = Math.abs(item.vx)*0.8;
         }
 
         if (item.y > game.height) {
-          item.vy = -1;
+          item.vy = -Math.abs(item.vy)*0.8;
         } else if (item.y < 0) {
-          item.vy = 1;
+          item.vy = Math.abs(item.vy)*0.8;
         }
 
         //hole
@@ -428,8 +430,14 @@ TheGame.prototype = {
             s.to({x: 0.5, y:0.5}, 1000, Phaser.Easing.Linear.None);
             s.onComplete.addOnce(function(){}, this);
             s.start();
+            item.radius *= 0.5;
+            item.mass *= 0.25;
           }
         }
+
+        //friction
+        item.vx *= 0.999;
+        item.vy *= 0.999;
 
         //calculate new position
         item.x += item.vx;
