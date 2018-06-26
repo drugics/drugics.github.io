@@ -347,49 +347,51 @@ TheGame.prototype = {
     buttonRestart.events.onInputDown.add(this.restart, this);
   //  buttonRestart.events.onInputUp.add(function(){downbuttonpressed=false;});
 
-    //arrowButtons
-    arrowButtonsPlaceX = game.width - 120;
-    arrowButtonsPlaceY = game.height - 60;
-    arrowButtonsPlaceOffset = 64;
-    buttonDown = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
-    buttonDown.angle = 180;
-    buttonDown.anchor.set(0.5);
-    buttonDown.alpha = 0.5;
-    buttonDown.fixedToCamera = true;
-    buttonDown.events.onInputOver.add(function(){this.downbuttonpressed=true;},this);
-    buttonDown.events.onInputOut.add(function(){this.downbuttonpressed=false;},this);
-    buttonDown.events.onInputDown.add(function(){this.downbuttonpressed=true;},this);
-    buttonDown.events.onInputUp.add(function(){this.downbuttonpressed=false;},this);
+    if (!game.device.desktop){
+      //arrowButtons
+      arrowButtonsPlaceX = game.width - 120;
+      arrowButtonsPlaceY = game.height - 60;
+      arrowButtonsPlaceOffset = 64;
+      buttonDown = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
+      buttonDown.angle = 180;
+      buttonDown.anchor.set(0.5);
+      buttonDown.alpha = 0.5;
+      buttonDown.fixedToCamera = true;
+      buttonDown.events.onInputOver.add(function(){this.downbuttonpressed=true;},this);
+      buttonDown.events.onInputOut.add(function(){this.downbuttonpressed=false;},this);
+      buttonDown.events.onInputDown.add(function(){this.downbuttonpressed=true;},this);
+      buttonDown.events.onInputUp.add(function(){this.downbuttonpressed=false;},this);
 
-    buttonUp = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY - arrowButtonsPlaceOffset, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
-    buttonUp.angle = 0;
-    buttonUp.anchor.set(0.5);
-    buttonUp.alpha = 0.5;
-    buttonUp.fixedToCamera = true;
-    buttonUp.events.onInputOver.add(function(){this.upbuttonpressed=true;},this);
-    buttonUp.events.onInputOut.add(function(){this.upbuttonpressed=false;},this);
-    buttonUp.events.onInputDown.add(function(){this.upbuttonpressed=true;},this);
-    buttonUp.events.onInputUp.add(function(){this.upbuttonpressed=false;},this);
+      buttonUp = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY - arrowButtonsPlaceOffset, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
+      buttonUp.angle = 0;
+      buttonUp.anchor.set(0.5);
+      buttonUp.alpha = 0.5;
+      buttonUp.fixedToCamera = true;
+      buttonUp.events.onInputOver.add(function(){this.upbuttonpressed=true;},this);
+      buttonUp.events.onInputOut.add(function(){this.upbuttonpressed=false;},this);
+      buttonUp.events.onInputDown.add(function(){this.upbuttonpressed=true;},this);
+      buttonUp.events.onInputUp.add(function(){this.upbuttonpressed=false;},this);
 
-    buttonLeft = game.add.button(arrowButtonsPlaceX - arrowButtonsPlaceOffset, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
-    buttonLeft.angle = 270;
-    buttonLeft.anchor.set(0.5);
-    buttonLeft.alpha = 0.5;
-    buttonLeft.fixedToCamera = true;
-    buttonLeft.events.onInputOver.add(function(){this.leftbuttonpressed=true;},this);
-    buttonLeft.events.onInputOut.add(function(){this.leftbuttonpressed=false;},this);
-    buttonLeft.events.onInputDown.add(function(){this.leftbuttonpressed=true;},this);
-    buttonLeft.events.onInputUp.add(function(){this.leftbuttonpressed=false;},this);
+      buttonLeft = game.add.button(arrowButtonsPlaceX - arrowButtonsPlaceOffset, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
+      buttonLeft.angle = 270;
+      buttonLeft.anchor.set(0.5);
+      buttonLeft.alpha = 0.5;
+      buttonLeft.fixedToCamera = true;
+      buttonLeft.events.onInputOver.add(function(){this.leftbuttonpressed=true;},this);
+      buttonLeft.events.onInputOut.add(function(){this.leftbuttonpressed=false;},this);
+      buttonLeft.events.onInputDown.add(function(){this.leftbuttonpressed=true;},this);
+      buttonLeft.events.onInputUp.add(function(){this.leftbuttonpressed=false;},this);
 
-    buttonRight = game.add.button(arrowButtonsPlaceX + arrowButtonsPlaceOffset, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
-    buttonRight.angle = 90;
-    buttonRight.anchor.set(0.5);
-    buttonRight.alpha = 0.5;
-    buttonRight.fixedToCamera = true;
-    buttonRight.events.onInputOver.add(function(){this.rightbuttonpressed=true;},this);
-    buttonRight.events.onInputOut.add(function(){this.rightbuttonpressed=false;},this);
-    buttonRight.events.onInputDown.add(function(){this.rightbuttonpressed=true;},this);
-    buttonRight.events.onInputUp.add(function(){this.rightbuttonpressed=false;},this);
+      buttonRight = game.add.button(arrowButtonsPlaceX + arrowButtonsPlaceOffset, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
+      buttonRight.angle = 90;
+      buttonRight.anchor.set(0.5);
+      buttonRight.alpha = 0.5;
+      buttonRight.fixedToCamera = true;
+      buttonRight.events.onInputOver.add(function(){this.rightbuttonpressed=true;},this);
+      buttonRight.events.onInputOut.add(function(){this.rightbuttonpressed=false;},this);
+      buttonRight.events.onInputDown.add(function(){this.rightbuttonpressed=true;},this);
+      buttonRight.events.onInputUp.add(function(){this.rightbuttonpressed=false;},this);
+    }
 
 
   },
