@@ -6,6 +6,7 @@ var gameOptions = {
 
   // game width
   gameWidth: 840,
+  gameHeight: 420,
   // local storage name, it's the variable we will be using to save game information such as best score
   localStorageName: "MKKSpace v0.1",
 
@@ -15,18 +16,18 @@ var gameOptions = {
 
 // when the window loads
 window.onload = function() {
-
+/*
   // determining window width/height ratio
   var windowRatio = window.innerWidth / window.innerHeight;
 
   // we already have in mind to use 100% of window width with game canvas, so let's
   // calculate game height to cover the entire height of the window
   var gameHeight = gameOptions.gameWidth / windowRatio;
-
+*/
 
 
   // game creation
-  game = new Phaser.Game(gameOptions.gameWidth, gameHeight);
+  game = new Phaser.Game(gameOptions.gameWidth, gameOptions.gameHeight);
 
   // adding game state
   game.state.add("TheGame", TheGame);
