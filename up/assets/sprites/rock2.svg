@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512px"
+   height="128px"
+   viewBox="0 0 512 128"
+   version="1.1"
+   id="SVGRoot"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="rock2.svg">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4.637442"
+     inkscape:cx="144.11882"
+     inkscape:cy="96.525263"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1323"
+     inkscape:window-height="713"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true"
+     inkscape:snap-global="false"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid170"
+       empspacing="4" />
+    <sodipodi:guide
+       position="63.828292,109.11188"
+       orientation="1,0"
+       id="guide1058"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="67.278469,64.259564"
+       orientation="0,1"
+       id="guide1060"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="32.02033,109.47903"
+       orientation="1,0"
+       id="guide1080"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="86.302414,96.060991"
+       orientation="0,1"
+       id="guide1082"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="127.77637,126.25159"
+       orientation="1,0"
+       id="guide2234"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="160.10165,122.89708"
+       orientation="1,0"
+       id="guide2236"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="95.958074,129.43558"
+       orientation="1,0"
+       id="guide2238"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs112">
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect2287"
+       effect="spiro" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2246"
+       is_visible="true" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect2242"
+       effect="spiro" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2232"
+       is_visible="true" />
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect2228"
+       effect="spiro" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2676"
+       is_visible="true" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2672"
+       is_visible="true" />
+  </defs>
+  <metadata
+     id="metadata115">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <path
+       style="fill:#c5e146;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:6.29291296;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.08045977"
+       d="m 17.432943,14.427292 c 2.225769,-1.285846 4.659691,-2.22142 6.741997,-3.728552 1.041153,-0.7535662 1.990648,-1.6528219 2.692794,-2.7293217 0.702146,-1.0764998 1.148424,-2.3390105 1.150497,-3.6242564 1.02e-4,-0.063411 -8.61e-4,-0.1268251 0,-0.19023 0.0098,-0.7223956 0.262139,-1.4350649 0.685237,-2.0206752 0.423099,-0.5856103 1.012583,-1.0448031 1.67215,-1.33963107 1.319133,-0.58965598 2.874662,-0.50672878 4.22322,0.0121133 1.348559,0.51884207 2.509478,1.44095707 3.510238,2.48320757 1.00076,1.0422505 1.858789,2.2107034 2.762718,3.3379654 3.560904,4.4406941 7.846023,8.2554091 11.456922,12.6555461 3.610899,4.400138 6.603666,9.622631 6.878305,15.308084 0.265965,5.505883 -2.127169,10.966911 -5.93699,14.950722 -3.80982,3.983812 -8.935309,6.561734 -14.288462,7.876738 -4.6646,1.145861 -9.585037,1.373575 -14.283284,0.374593 C 20.000038,56.794613 15.535107,54.539505 12.140299,51.141452 7.094281,46.09061 4.6795644,38.571652 5.7338442,31.510364 6.7881241,24.449075 11.250863,17.998733 17.432943,14.427292 Z"
+       id="path2670"
+       inkscape:connector-curvature="0"
+       inkscape:path-effect="#path-effect2672"
+       inkscape:original-d="M 17.432943,14.427292 C 19.19697,2.1894219 24.489989,7.7056819 28.018231,4.3451619 c 3.528242,-3.36052002 1.87e-4,-0.12701 0,-0.19023 -1.87e-4,-0.0632 8.569233,1.64846 12.853563,2.47298 4.284337,0.82451 12.223673,18.6422301 18.335227,27.9636301 6.111557,9.3214 -13.483451,15.21812 -20.225452,22.82746 -6.742011,7.60934 -17.893993,-4.18522 -26.84127,-6.27755 -8.9472758,-2.09233 3.528617,-24.4763 5.292644,-36.71416 z"
+       inkscape:transform-center-x="-0.43127224"
+       inkscape:transform-center-y="-2.5876334" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path2670"
+       inkscape:transform-center-x="-0.43127224"
+       inkscape:transform-center-y="-2.4993686"
+       id="use2289"
+       width="100%"
+       height="100%"
+       transform="matrix(1,0,0,0.96588975,64,1.0912869)"
+       style="stroke-width:1.01750422" />
+    <use
+       style="stroke-width:1.03218937"
+       transform="matrix(1,0,0,0.93860155,128,1.9643164)"
+       height="100%"
+       width="100%"
+       id="use2293"
+       inkscape:transform-center-y="-2.4287568"
+       inkscape:transform-center-x="-0.43127224"
+       xlink:href="#path2670"
+       y="0"
+       x="0" />
+  </g>
+</svg>

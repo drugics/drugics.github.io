@@ -52,12 +52,15 @@ TheGame.prototype = {
     // the game will NOT keep running even when it loses the focus
     game.stage.disableVisibilityChange = false;
 
+    game.load.spritesheet("rock1", "assets/sprites/rock1.svg", 64, 64);
+    game.load.spritesheet("rock2", "assets/sprites/rock2.svg", 64, 64);
     game.load.spritesheet("whitehole", "assets/sprites/whitehole.svg", 64, 64);
-    game.load.spritesheet("rockvectsprite", "assets/sprites/rockvectsprite.svg", 64, 64);
-    game.load.spritesheet("rockvectsprite2", "assets/sprites/rockvectsprite2.svg", 64, 64);
-    game.load.spritesheet("rockvectsprite3", "assets/sprites/rockvectsprite3.svg", 64, 64);
+    game.load.spritesheet("shine", "assets/sprites/shine.svg", 64, 64);
+    game.load.spritesheet("rock3", "assets/sprites/rock3.svg", 64, 64);
     game.load.image("tile", "assets/sprites/tile.png");
-    game.load.spritesheet('player', 'assets/sprites/spacekutyisprite.png', 32, 32);
+    //game.load.spritesheet('player', 'assets/sprites/spacekutyisprite.png', 32, 32);
+    game.load.spritesheet('player', 'assets/sprites/spacedog.png', 64, 64);
+
 
     // preloading the bitmap font, generated with Littera bitmap font generator
     game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
@@ -102,61 +105,68 @@ TheGame.prototype = {
     //whitehole
     this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
     this.whitehole.anchor.set(0.5);
-    this.whitehole.scale.set(1.5);
+    //this.whitehole.scale.set(1.5);
 
-    //rockvectsprite
-    this.rockvectsprite = game.add.sprite(48, 248, 'rockvectsprite', 2);
-    this.rockvectsprite.scale.set(2);
-    this.rockvectsprite.tint = 0x5e2200;
-    this.rockvectsprite.animations.add('right', [8,9,10,11,12,13,14,15,4,5,6], 12, true);
-    this.rockvectsprite.animations.add('left', [6,5,4,15,14,13,12,11,10,9,8], 12, true);
-    // setting rockvectsprite registration point
-    this.rockvectsprite.anchor.set(0.5);
-    this.rockvectsprite.play('left');
+    this.rock1 = game.add.sprite(200, 200, 'rock1', 2);
 
-    this.rockvectsprite.radius = 48;
-    this.rockvectsprite.mass = 2;
-    this.rockvectsprite.vx = 1;
-    this.rockvectsprite.vy = 2;
-    this.item_array.push(this.rockvectsprite);
+    this.rock1.shine = game.add.sprite(0, 0, 'shine');
+    this.rock1.shine.anchor.set(0.5);
 
-    //rockvectsprite2
-    this.rockvectsprite2 = game.add.sprite(148, 48, 'rockvectsprite2', 2);
-    this.rockvectsprite2.scale.set(2);
-    this.rockvectsprite2.tint = 0xd70000;
-    this.rockvectsprite2.animations.add('right', [0,1,2,3],12, true);
-    // setting registration point
-    this.rockvectsprite2.anchor.set(0.5);
-    this.rockvectsprite2.play('right');
+    this.rock1.anchor.set(0.5);
+    this.rock1.animations.add('ani1', [0, 1, 2, 1], 1, true);
+    this.rock1.play('ani1');
+    this.rock1.radius = 24;
+    this.rock1.mass = 1;
+    this.rock1.vx = 0;
+    this.rock1.vy = 0;
+    this.rock1.rotational_speed = 2;
+    this.item_array.push(this.rock1);
 
-    this.rockvectsprite2.radius = 48;
-    this.rockvectsprite2.mass = 2;
-    this.rockvectsprite2.vx = 1;
-    this.rockvectsprite2.vy = 2;
+    this.rock2 = game.add.sprite(300, 200, 'rock2', 2);
 
-    this.item_array.push(this.rockvectsprite2);
+    this.rock2.shine = game.add.sprite(0, 0, 'shine');
+    this.rock2.shine.anchor.set(0.5);
+    this.rock2.shine.scale.x *= 1.33;
+    this.rock2.shine.scale.y *= 1.33;
 
-    //rockvectsprite3
-    this.rockvectsprite3 = game.add.sprite(68, 88, 'rockvectsprite3', 2);
-    this.rockvectsprite3.scale.set(2);
-    this.rockvectsprite3.tint = 0xd86e00;
-    this.rockvectsprite3.animations.add('right', [0,1,2,3,2,1],12, true);
-    // setting registration point
-    this.rockvectsprite3.anchor.set(0.5);
-    this.rockvectsprite3.play('right');
+    this.rock2.anchor.set(0.5);
+    this.rock2.animations.add('ani1', [0, 1, 2, 1], 1, true);
+    this.rock2.play('ani1');
+    this.rock2.radius = 32;
+    this.rock2.mass = 2;
+    this.rock2.vx = 0;
+    this.rock2.vy = 0;
+    this.rock2.rotational_speed = 2;
+    this.item_array.push(this.rock2);
 
-    this.rockvectsprite3.radius = 48;
-    this.rockvectsprite3.mass = 2;
-    this.rockvectsprite3.vx = 1;
-    this.rockvectsprite3.vy = 2;
 
-    this.item_array.push(this.rockvectsprite3);
+    //rock3
+    this.rock3 = game.add.sprite(48, 248, 'rock3', 2);
+    //this.rock3.scale.set(2);
+    this.rock3.tint = 0xd70000;
+    this.rock3.animations.add('right', [8,9,10,11,12,13,14,15,4,5,6], 12, true);
+    this.rock3.animations.add('left', [6,5,4,15,14,13,12,11,10,9,8], 12, true);
+    this.rock3.shine = game.add.sprite(0, 0, 'shine');
+    this.rock3.shine.anchor.set(0.5);
+    this.rock3.shine.scale.x *= 1.33;
+    this.rock3.shine.scale.y *= 1.33;
+
+    this.rock3.anchor.set(0.5);
+    this.rock3.play('left');
+
+    this.rock3.radius = 48;
+    this.rock3.mass = 2;
+    this.rock3.vx = 1;
+    this.rock3.vy = 2;
+    this.item_array.push(this.rock3);
 
     // adding the player
     this.thePlayer = game.add.sprite(148, 148, 'player', 2);
     this.thePlayer.smoothed = false;
-    this.thePlayer.scale.set(2);//	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
-    this.thePlayer.animations.add('right', [0,1,2,3], 4, true);
+    //this.thePlayer.scale.set(0.5);
+    //	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
+    //this.thePlayer.animations.add('right', [0,1,2,3], 4, true);
+    this.thePlayer.animations.add('right', [0,0,0,0], 4, true);
 
     // setting player registration point
     this.thePlayer.anchor.set(0.5);
@@ -263,13 +273,33 @@ TheGame.prototype = {
 
       this.actualScoreText.text = this.score
 
-      this.physicalInteractions();
+      this.physical_interactions();
 
       //is it over?
       var isGameOver = true;
       for (var index = 0, len = this.item_array.length; index < len; ++index) {
         var item = this.item_array[index];
-        if (!item.isShrunk){isGameOver = false;}
+        if (!item.isShrunk){
+          //hole
+          if ( Math.abs(item.x - this.whitehole.x) < 20 && Math.abs(item.y - this.whitehole.y) < 20) {
+              item.isShrunk = true;
+              this.taikoCSound.play();
+              s = game.add.tween(item.scale);
+              s.to({x: 0.5, y:0.5}, 2000, Phaser.Easing.Linear.None);
+              //s.onComplete.addOnce(function(){}, this);
+              s.start();
+              item.radius *= 0.5;
+              item.mass *= 0.125;
+              if (item.shine != null){
+                s2 = game.add.tween(item.shine.scale);
+                s2.to({x: 0.5, y:0.5}, 2000, Phaser.Easing.Linear.None);
+                s2.start();
+              }
+
+          } else {
+            isGameOver = false;
+          }
+        }
       }
       if (isGameOver){this.gameOver();}
     }
@@ -319,9 +349,9 @@ TheGame.prototype = {
 
     //arrowButtons
     arrowButtonsPlaceX = game.width - 120;
-    arrowButtonsPlaceY = game.height - 120;
+    arrowButtonsPlaceY = game.height - 60;
     arrowButtonsPlaceOffset = 64;
-    buttonDown = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY + arrowButtonsPlaceOffset, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
+    buttonDown = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
     buttonDown.angle = 180;
     buttonDown.anchor.set(0.5);
     buttonDown.alpha = 0.5;
@@ -391,7 +421,7 @@ TheGame.prototype = {
   },
 
 
-    physicalInteractions: function(){
+    physical_interactions: function(){
 
       for (var index = 0, len = this.item_array.length; index < len; ++index) {
         var item = this.item_array[index];
@@ -421,20 +451,6 @@ TheGame.prototype = {
           item.vy = Math.abs(item.vy)*0.8;
         }
 
-        //hole
-        if ( Math.abs(item.x - this.whitehole.x) < 20 && Math.abs(item.y - this.whitehole.y) < 20) {
-          if (!item.isShrunk){
-            item.isShrunk = true;
-            this.taikoCSound.play();
-            s = game.add.tween(item.scale);
-            s.to({x: 0.5, y:0.5}, 1000, Phaser.Easing.Linear.None);
-            s.onComplete.addOnce(function(){}, this);
-            s.start();
-            item.radius *= 0.5;
-            item.mass *= 0.25;
-          }
-        }
-
         //friction
         item.vx *= 0.999;
         item.vy *= 0.999;
@@ -442,6 +458,17 @@ TheGame.prototype = {
         //calculate new position
         item.x += item.vx;
         item.y += item.vy;
+
+        //rotation
+        if (item.rotational_speed != null){item.angle += item.rotational_speed;}
+
+        //shine layer
+        if (item.shine != null){
+          item.shine.x = item.x;
+          item.shine.y = item.y;
+        }
+
+
 
       }
 
