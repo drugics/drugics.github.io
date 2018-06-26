@@ -350,9 +350,9 @@ TheGame.prototype = {
     if (!game.device.desktop){
       //arrowButtons
       arrowButtonsPlaceX = game.width - 120;
-      arrowButtonsPlaceY = game.height - 60;
+      arrowButtonsPlaceY = game.height - 120;
       arrowButtonsPlaceOffset = 64;
-      buttonDown = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
+      buttonDown = game.add.button(arrowButtonsPlaceX, arrowButtonsPlaceY + arrowButtonsPlaceOffset, 'arrowupbuttonface', null, this, 0, 1, 0, 1);
       buttonDown.angle = 180;
       buttonDown.anchor.set(0.5);
       buttonDown.alpha = 0.5;
