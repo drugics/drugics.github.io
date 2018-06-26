@@ -55,7 +55,7 @@ TheGame.prototype = {
 
     game.load.spritesheet("rock1", "assets/sprites/rock1.svg", 64, 64);
     game.load.spritesheet("rock2", "assets/sprites/rock2.svg", 64, 64);
-    game.load.spritesheet("whitehole", "assets/sprites/whitehole.svg", 64, 64);
+    game.load.spritesheet("whitehole", "assets/sprites/whitehole.svg", 256, 256);
     game.load.spritesheet("shine", "assets/sprites/shine.svg", 64, 64);
     game.load.spritesheet("rock3", "assets/sprites/rock3.svg", 64, 64);
     game.load.image("tile", "assets/sprites/tile.png");
@@ -106,7 +106,8 @@ TheGame.prototype = {
     //whitehole
     this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
     this.whitehole.anchor.set(0.5);
-    //this.whitehole.scale.set(1.5);
+    //this.whitehole.scale.set(3);
+    this.whitehole.radius = 60;
 
     this.rock1 = game.add.sprite(200, 200, 'rock1', 2);
 
@@ -246,7 +247,7 @@ TheGame.prototype = {
     if(this.isTheGameRunning){
       //control the player
       acc = 0.05;
-      this.score++;
+      
       if (upKey.isDown || this.upbuttonpressed == true)
       {
         this.thePlayer.vy-=acc;
@@ -282,7 +283,7 @@ TheGame.prototype = {
         var item = this.item_array[index];
         if (!item.isShrunk){
           //hole
-          if ( Math.abs(item.x - this.whitehole.x) < 20 && Math.abs(item.y - this.whitehole.y) < 20) {
+          if ( Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
               item.isShrunk = true;
               this.taikoCSound.play();
               s = game.add.tween(item.scale);
@@ -414,7 +415,7 @@ TheGame.prototype = {
     }));
 
     // wait ... seconds before restarting the game
-    game.time.events.add(Phaser.Timer.SECOND * 1, function(){
+    game.time.events.add(Phaser.Timer.SECOND * 3, function(){
       game.state.start("TheGame");
     }, this);
 
