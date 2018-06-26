@@ -59,7 +59,7 @@ TheGame.prototype = {
     game.load.spritesheet("rock3", "assets/sprites/rock3.svg", 64, 64);
     game.load.image("tile", "assets/sprites/tile.png");
     //game.load.spritesheet('player', 'assets/sprites/spacekutyisprite.png', 32, 32);
-    game.load.spritesheet('player', 'assets/sprites/spacedog.png', 64, 64);
+    game.load.spritesheet('player', 'assets/sprites/player.svg', 64, 64);
 
 
     // preloading the bitmap font, generated with Littera bitmap font generator
@@ -132,20 +132,19 @@ TheGame.prototype = {
     this.rock2.anchor.set(0.5);
     this.rock2.animations.add('ani1', [0, 1, 2, 1], 1, true);
     this.rock2.play('ani1');
-    this.rock2.radius = 32;
+    this.rock2.radius = 28;
     this.rock2.mass = 2;
     this.rock2.vx = 0;
     this.rock2.vy = 0;
-    this.rock2.rotational_speed = 2;
+    this.rock2.rotational_speed = 1;
     this.item_array.push(this.rock2);
 
 
     //rock3
     this.rock3 = game.add.sprite(48, 248, 'rock3', 2);
     //this.rock3.scale.set(2);
-    this.rock3.tint = 0xd70000;
-    this.rock3.animations.add('right', [8,9,10,11,12,13,14,15,4,5,6], 12, true);
-    this.rock3.animations.add('left', [6,5,4,15,14,13,12,11,10,9,8], 12, true);
+    //this.rock3.tint = 0xd70000;
+    this.rock3.animations.add('right', [0, 1, 2, 1], 2, true);
     this.rock3.shine = game.add.sprite(0, 0, 'shine');
     this.rock3.shine.anchor.set(0.5);
     this.rock3.shine.scale.x *= 1.33;
@@ -154,15 +153,16 @@ TheGame.prototype = {
     this.rock3.anchor.set(0.5);
     this.rock3.play('left');
 
-    this.rock3.radius = 48;
+    this.rock3.radius = 24;
     this.rock3.mass = 2;
-    this.rock3.vx = 1;
-    this.rock3.vy = 2;
+    this.rock3.vx = 0;
+    this.rock3.vy = 0;
+    this.rock3.rotational_speed = 0.5;
     this.item_array.push(this.rock3);
 
     // adding the player
     this.thePlayer = game.add.sprite(148, 148, 'player', 2);
-    this.thePlayer.smoothed = false;
+    //this.thePlayer.smoothed = false;
     //this.thePlayer.scale.set(0.5);
     //	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
     //this.thePlayer.animations.add('right', [0,1,2,3], 4, true);
@@ -171,7 +171,7 @@ TheGame.prototype = {
     // setting player registration point
     this.thePlayer.anchor.set(0.5);
 
-    this.thePlayer.radius = 32;
+    this.thePlayer.radius = 24;
     this.thePlayer.mass = 1;
     this.thePlayer.vx = 0;
     this.thePlayer.vy = 0;
