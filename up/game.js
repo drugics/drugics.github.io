@@ -109,9 +109,9 @@ TheGame.prototype = {
     //this.whitehole.scale.set(3);
     this.whitehole.radius = 60;
 
-    this.rock1 = game.add.sprite(200, 200, 'rock1', 2);
+    this.rock1 = game.add.sprite(200, 100, 'rock1', 2);
 
-    this.rock1.shine = game.add.sprite(0, 0, 'shine');
+    this.rock1.shine = game.add.sprite(this.rock1.x, this.rock1.y, 'shine');
     this.rock1.shine.anchor.set(0.5);
 
     this.rock1.anchor.set(0.5);
@@ -124,9 +124,9 @@ TheGame.prototype = {
     this.rock1.rotational_speed = 2;
     this.item_array.push(this.rock1);
 
-    this.rock2 = game.add.sprite(300, 200, 'rock2', 2);
+    this.rock2 = game.add.sprite(200, 200, 'rock2', 2);
 
-    this.rock2.shine = game.add.sprite(0, 0, 'shine');
+    this.rock2.shine = game.add.sprite(this.rock2.x, this.rock2.y, 'shine');
     this.rock2.shine.anchor.set(0.5);
     this.rock2.shine.scale.x *= 1.33;
     this.rock2.shine.scale.y *= 1.33;
@@ -143,17 +143,17 @@ TheGame.prototype = {
 
 
     //rock3
-    this.rock3 = game.add.sprite(48, 248, 'rock3', 2);
+    this.rock3 = game.add.sprite(100, 200, 'rock3', 2);
     //this.rock3.scale.set(2);
     //this.rock3.tint = 0xd70000;
-    this.rock3.animations.add('right', [0, 1, 2, 1], 2, true);
-    this.rock3.shine = game.add.sprite(0, 0, 'shine');
+    this.rock3.animations.add('ani1', [0, 1, 2, 1], 2, true);
+    this.rock3.shine = game.add.sprite(this.rock3.x, this.rock3.y, 'shine');
     this.rock3.shine.anchor.set(0.5);
     this.rock3.shine.scale.x *= 1.33;
     this.rock3.shine.scale.y *= 1.33;
 
     this.rock3.anchor.set(0.5);
-    this.rock3.play('left');
+    this.rock3.play('ani1');
 
     this.rock3.radius = 24;
     this.rock3.mass = 2;
@@ -163,7 +163,7 @@ TheGame.prototype = {
     this.item_array.push(this.rock3);
 
     // adding the player
-    this.thePlayer = game.add.sprite(148, 148, 'player', 2);
+    this.thePlayer = game.add.sprite(100, 100, 'player', 2);
     //this.thePlayer.smoothed = false;
     //this.thePlayer.scale.set(0.5);
     //	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
@@ -247,7 +247,7 @@ TheGame.prototype = {
     if(this.isTheGameRunning){
       //control the player
       acc = 0.05;
-      
+
       if (upKey.isDown || this.upbuttonpressed == true)
       {
         this.thePlayer.vy-=acc;
@@ -404,19 +404,19 @@ TheGame.prototype = {
   },
 
   gameOver: function(){
-
-    this.isTheGameRunning = false;
-  //  this.thePlayer.animations.stop();
-
-
     // updating localstorage setting score as the max value between current score and saved score
     localStorage.setItem(gameOptions.localStorageName,JSON.stringify({
       score: Math.min(this.score, this.savedData.score)
     }));
+    var scale_tween = game.add.tween(this.actualScoreText.scale);
+    scale_tween.to({x: 3, y: 3}, 4000, Phaser.Easing.Linear.None);
+    //s.onComplete.addOnce(function(){}, this);
+    scale_tween.start();
 
     // wait ... seconds before restarting the game
-    game.time.events.add(Phaser.Timer.SECOND * 3, function(){
+    game.time.events.add(Phaser.Timer.SECOND * 10, function(){
       game.state.start("TheGame");
+      this.isTheGameRunning = false;
     }, this);
 
 
