@@ -68,6 +68,7 @@ TheGame.prototype = {
 
     // preloading the two audio files used in the game
     game.load.audio("taikoC", "assets/sounds/taikoC.ogg");
+    game.load.audio("TMZ_PTG", "assets/sounds/TMZ_PTG.ogg");
 
     //buttons
     game.load.spritesheet('buttonface', 'assets/sprites/tile.png',64,64);
@@ -84,6 +85,9 @@ TheGame.prototype = {
 
     // assigning the two sounds to variables to be called later
     this.taikoCSound = game.add.audio("taikoC");
+    this.PTGSound = game.add.audio("TMZ_PTG");
+    //this.taikoCSound.addMarker('tokk', 0, 0.25);
+
     // creation of a group where we will place all bitmap texts showing the scores
     this.scoreGroup = game.add.group();
 
@@ -168,7 +172,7 @@ TheGame.prototype = {
     //this.thePlayer.scale.set(0.5);
     //	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
     //this.thePlayer.animations.add('right', [0,1,2,3], 4, true);
-    this.thePlayer.animations.add('right', [0,0,0,0], 4, true);
+    this.thePlayer.animations.add('right', [0,1,2,3], 1, true);
 
     // setting player registration point
     this.thePlayer.anchor.set(0.5);
@@ -324,12 +328,12 @@ TheGame.prototype = {
 
     //this.mainSound.play('sheet0');
     //this.main120bpmSound.play({ loop : true });
-    this.taikoCSound.play();
+    this.PTGSound.play();
     this.thePlayer.play('right');
     this.thePlayer.vx = 0;
     this.thePlayer.vy = 0;
 
-    game.time.events.add(Phaser.Timer.SECOND * 600 ,this.gameOver, this);
+    //game.time.events.add(Phaser.Timer.SECOND * 600 ,this.gameOver, this);
 
 
     // waiting for player input, then call gameOn function
@@ -508,6 +512,7 @@ TheGame.prototype = {
   			object_1.vy += object_1_ay;
   			object_2.vx -= object_2_ax;
   			object_2.vy -= object_2_ay;
+        if (!this.taikoCSound.isPlaying){this.taikoCSound.play();}
   		}
   		else
   		{
@@ -594,7 +599,7 @@ TheGame.prototype = {
   			object_2.vx = tmp_cartesian_v_object_2.x;
   			object_2.vy = tmp_cartesian_v_object_2.y;
 
-        this.taikoCSound.play();
+        this.PTGSound.play();
 
   		}
 
