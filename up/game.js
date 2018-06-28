@@ -69,6 +69,9 @@ TheGame.prototype = {
     // preloading the two audio files used in the game
     game.load.audio("taikoC", "assets/sounds/taikoC.ogg");
     game.load.audio("TMZ_PTG", "assets/sounds/TMZ_PTG.ogg");
+    game.load.audio("crash02", "assets/sounds/crash02.ogg");
+    game.load.audio("sidestick01", "assets/sounds/sidestick01.ogg");
+    game.load.audio("bassdrum04", "assets/sounds/bassdrum04.ogg");
 
     //buttons
     game.load.spritesheet('buttonface', 'assets/sprites/tile.png',64,64);
@@ -86,6 +89,9 @@ TheGame.prototype = {
     // assigning the two sounds to variables to be called later
     this.taikoCSound = game.add.audio("taikoC");
     this.PTGSound = game.add.audio("TMZ_PTG");
+    this.crash02 = game.add.audio("crash02");
+    this.sidestick01 = game.add.audio("sidestick01");
+    this.bassdrum04 = game.add.audio("bassdrum04");
     //this.taikoCSound.addMarker('tokk', 0, 0.25);
 
     // creation of a group where we will place all bitmap texts showing the scores
@@ -105,7 +111,7 @@ TheGame.prototype = {
     this.item_array = new Array();
     //physics param
     this.spring_constant = 8;
-    this.fast_collision_from_amax = 10; //??
+    this.fast_collision_from_amax = 6; //??tudu
 
     //whitehole
     this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
@@ -250,29 +256,35 @@ TheGame.prototype = {
   update: function(){
     if(this.isTheGameRunning){
       //control the player
-      acc = 0.05;
+      acc = 0.5;
+      if (!this.taikoCSound.isPlaying)
+      {
+        if (upKey.isDown || this.upbuttonpressed == true)
+            {
+              this.thePlayer.vy-=acc;
+              this.score++;
+              this.taikoCSound.play();
+            }
+            else if (downKey.isDown || this.downbuttonpressed == true)
+            {
+              this.thePlayer.vy+=acc;
+              this.score++;
+              this.taikoCSound.play();
+            }
 
-      if (upKey.isDown || this.upbuttonpressed == true)
-      {
-        this.thePlayer.vy-=acc;
-        this.score++;
-      }
-      else if (downKey.isDown || this.downbuttonpressed == true)
-      {
-        this.thePlayer.vy+=acc;
-        this.score++;
-      }
-
-      if (leftKey.isDown || this.leftbuttonpressed == true)
-      {
-        this.thePlayer.vx-=acc;
-        this.score++;
-      }
-      else if (rightKey.isDown || this.rightbuttonpressed == true)
-      {
-        this.thePlayer.vx+=acc;
-        this.score++;
-      }
+            if (leftKey.isDown || this.leftbuttonpressed == true)
+            {
+              this.thePlayer.vx-=acc;
+              this.score++;
+              this.taikoCSound.play();
+            }
+            else if (rightKey.isDown || this.rightbuttonpressed == true)
+            {
+              this.thePlayer.vx+=acc;
+              this.score++;
+              this.taikoCSound.play();
+            }
+          }
 
       //rotate the whitehole
       this.whitehole.angle -= 0.5;
@@ -289,7 +301,7 @@ TheGame.prototype = {
           //hole
           if ( Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
               item.isShrunk = true;
-              this.taikoCSound.play();
+              this.PTGSound.play();
               s = game.add.tween(item.scale);
               s.to({x: 0.5, y:0.5}, 2000, Phaser.Easing.Linear.None);
               //s.onComplete.addOnce(function(){}, this);
@@ -307,7 +319,9 @@ TheGame.prototype = {
           }
         }
       }
-      if (isGameOver){this.gameOver();}
+      if (isGameOver){
+          this.gameOver();
+      }
     }
   },
 
@@ -328,7 +342,6 @@ TheGame.prototype = {
 
     //this.mainSound.play('sheet0');
     //this.main120bpmSound.play({ loop : true });
-    this.PTGSound.play();
     this.thePlayer.play('right');
     this.thePlayer.vx = 0;
     this.thePlayer.vy = 0;
@@ -412,15 +425,18 @@ TheGame.prototype = {
     localStorage.setItem(gameOptions.localStorageName,JSON.stringify({
       score: Math.min(this.score, this.savedData.score)
     }));
-    var scale_tween = game.add.tween(this.actualScoreText.scale);
-    scale_tween.to({x: 3, y: 3}, 4000, Phaser.Easing.Linear.None);
+    this.isTheGameRunning = false;
+    var finalScoreText = game.add.bitmapText(gameOptions.gameWidth/2, gameOptions.gameHeight/2, "font", this.score, 36);
+    finalScoreText.anchor.set(0.5, 0.5);
+    finalScoreText.tint = 0xe6ff12;
+    var scale_tween = game.add.tween(finalScoreText.scale);
+    scale_tween.to({x: 10, y: 10}, 4000, Phaser.Easing.Linear.None);
     //s.onComplete.addOnce(function(){}, this);
     scale_tween.start();
 
     // wait ... seconds before restarting the game
     game.time.events.add(Phaser.Timer.SECOND * 10, function(){
       game.state.start("TheGame");
-      this.isTheGameRunning = false;
     }, this);
 
 
@@ -512,7 +528,7 @@ TheGame.prototype = {
   			object_1.vy += object_1_ay;
   			object_2.vx -= object_2_ax;
   			object_2.vy -= object_2_ay;
-        if (!this.taikoCSound.isPlaying){this.taikoCSound.play();}
+        if (!this.bassdrum04.isPlaying){this.bassdrum04.play();}
   		}
   		else
   		{
@@ -595,11 +611,11 @@ TheGame.prototype = {
 
   			object_1.vx = tmp_cartesian_v_object_1.x;
   			object_1.vy = tmp_cartesian_v_object_1.y;
+        object_2.vx = tmp_cartesian_v_object_2.x;
 
-  			object_2.vx = tmp_cartesian_v_object_2.x;
   			object_2.vy = tmp_cartesian_v_object_2.y;
 
-        this.PTGSound.play();
+        this.sidestick01.play();
 
   		}
 
