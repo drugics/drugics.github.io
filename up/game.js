@@ -3,12 +3,12 @@ var game;
 
 // global object with all game options
 var gameOptions = {
-  number_of_levels : 3,
+  number_of_levels : 5,
   // game width
   gameWidth: 840,
   gameHeight: 420,
   // local storage name, it's the variable we will be using to save game information such as best score
-  localStorageName: "MKKSpace 0.128",
+  localStorageName: "MKKSpace 0.129",
 
 }
 
@@ -272,7 +272,8 @@ TheGame.prototype = {
 
       this.thePlayer.play('right');
       this.item_array.push(this.thePlayer);
-    } else if (this.actual_level == 3)
+    }
+    else if (this.actual_level == 3)
     {
       //whitehole
       this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
@@ -315,6 +316,166 @@ TheGame.prototype = {
 
       //rock3
       this.rock3 = game.add.sprite(200, 300, 'rock3', 2);
+      //this.rock3.scale.set(2);
+      //this.rock3.tint = 0xd70000;
+      this.rock3.animations.add('ani1', [0, 1, 2, 1], 2, true);
+      this.rock3.shine = game.add.sprite(this.rock3.x, this.rock3.y, 'shine');
+      this.rock3.shine.anchor.set(0.5);
+      this.rock3.shine.scale.x *= 1.33;
+      this.rock3.shine.scale.y *= 1.33;
+
+      this.rock3.anchor.set(0.5);
+      this.rock3.play('ani1');
+
+      this.rock3.radius = 24;
+      this.rock3.mass = 2;
+      this.rock3.vx = 0;
+      this.rock3.vy = 0;
+      this.rock3.rotational_speed = 0.5;
+      this.item_array.push(this.rock3);
+
+      // adding the player
+      this.thePlayer = game.add.sprite(100, 100, 'player', 2);
+      //this.thePlayer.smoothed = false;
+      //this.thePlayer.scale.set(0.5);
+      //	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
+      //this.thePlayer.animations.add('right', [0,1,2,3], 4, true);
+      this.thePlayer.animations.add('right', [0,1,2,3], 1, true);
+
+      // setting player registration point
+      this.thePlayer.anchor.set(0.5);
+
+      this.thePlayer.radius = 24;
+      this.thePlayer.mass = 1;
+      this.thePlayer.vx = 0;
+      this.thePlayer.vy = 0;
+
+      this.thePlayer.play('right');
+      this.item_array.push(this.thePlayer);
+    }
+    else if (this.actual_level == 4)
+    {
+      //whitehole
+      this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
+      this.whitehole.anchor.set(0.5);
+      //this.whitehole.scale.set(3);
+      this.whitehole.radius = 60;
+
+      this.rock1 = game.add.sprite(200, 100, 'rock1', 2);
+
+      this.rock1.shine = game.add.sprite(this.rock1.x, this.rock1.y, 'shine');
+      this.rock1.shine.anchor.set(0.5);
+
+      this.rock1.anchor.set(0.5);
+      this.rock1.animations.add('ani1', [0, 1, 2, 1], 1, true);
+      this.rock1.play('ani1');
+      this.rock1.radius = 24;
+      this.rock1.mass = 1;
+      this.rock1.vx = 0;
+      this.rock1.vy = 0;
+      this.rock1.rotational_speed = 2;
+      this.item_array.push(this.rock1);
+
+      this.rock2 = game.add.sprite(300, 100, 'rock2', 2);
+
+      this.rock2.shine = game.add.sprite(this.rock2.x, this.rock2.y, 'shine');
+      this.rock2.shine.anchor.set(0.5);
+      this.rock2.shine.scale.x *= 1.33;
+      this.rock2.shine.scale.y *= 1.33;
+
+      this.rock2.anchor.set(0.5);
+      this.rock2.animations.add('ani1', [0, 1, 2, 1], 1, true);
+      this.rock2.play('ani1');
+      this.rock2.radius = 28;
+      this.rock2.mass = 2;
+      this.rock2.vx = 0;
+      this.rock2.vy = 0;
+      this.rock2.rotational_speed = 1;
+      this.item_array.push(this.rock2);
+
+
+      //rock3
+      this.rock3 = game.add.sprite(400, 100, 'rock3', 2);
+      //this.rock3.scale.set(2);
+      //this.rock3.tint = 0xd70000;
+      this.rock3.animations.add('ani1', [0, 1, 2, 1], 2, true);
+      this.rock3.shine = game.add.sprite(this.rock3.x, this.rock3.y, 'shine');
+      this.rock3.shine.anchor.set(0.5);
+      this.rock3.shine.scale.x *= 1.33;
+      this.rock3.shine.scale.y *= 1.33;
+
+      this.rock3.anchor.set(0.5);
+      this.rock3.play('ani1');
+
+      this.rock3.radius = 24;
+      this.rock3.mass = 2;
+      this.rock3.vx = 0;
+      this.rock3.vy = 0;
+      this.rock3.rotational_speed = 0.5;
+      this.item_array.push(this.rock3);
+
+      // adding the player
+      this.thePlayer = game.add.sprite(100, 100, 'player', 2);
+      //this.thePlayer.smoothed = false;
+      //this.thePlayer.scale.set(0.5);
+      //	this.thePlayer.animations.add('right', [1,2,3,4], 16, true);
+      //this.thePlayer.animations.add('right', [0,1,2,3], 4, true);
+      this.thePlayer.animations.add('right', [0,1,2,3], 1, true);
+
+      // setting player registration point
+      this.thePlayer.anchor.set(0.5);
+
+      this.thePlayer.radius = 24;
+      this.thePlayer.mass = 1;
+      this.thePlayer.vx = 0;
+      this.thePlayer.vy = 0;
+
+      this.thePlayer.play('right');
+      this.item_array.push(this.thePlayer);
+    }
+    else if (this.actual_level == 5)
+    {
+      //whitehole
+      this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
+      this.whitehole.anchor.set(0.5);
+      //this.whitehole.scale.set(3);
+      this.whitehole.radius = 60;
+
+      this.rock1 = game.add.sprite(300, 100, 'rock1', 2);
+
+      this.rock1.shine = game.add.sprite(this.rock1.x, this.rock1.y, 'shine');
+      this.rock1.shine.anchor.set(0.5);
+
+      this.rock1.anchor.set(0.5);
+      this.rock1.animations.add('ani1', [0, 1, 2, 1], 1, true);
+      this.rock1.play('ani1');
+      this.rock1.radius = 24;
+      this.rock1.mass = 1;
+      this.rock1.vx = 0;
+      this.rock1.vy = 0;
+      this.rock1.rotational_speed = 2;
+      this.item_array.push(this.rock1);
+
+      this.rock2 = game.add.sprite(350, 100, 'rock2', 2);
+
+      this.rock2.shine = game.add.sprite(this.rock2.x, this.rock2.y, 'shine');
+      this.rock2.shine.anchor.set(0.5);
+      this.rock2.shine.scale.x *= 1.33;
+      this.rock2.shine.scale.y *= 1.33;
+
+      this.rock2.anchor.set(0.5);
+      this.rock2.animations.add('ani1', [0, 1, 2, 1], 1, true);
+      this.rock2.play('ani1');
+      this.rock2.radius = 28;
+      this.rock2.mass = 2;
+      this.rock2.vx = 0;
+      this.rock2.vy = 0;
+      this.rock2.rotational_speed = 1;
+      this.item_array.push(this.rock2);
+
+
+      //rock3
+      this.rock3 = game.add.sprite(400, 100, 'rock3', 2);
       //this.rock3.scale.set(2);
       //this.rock3.tint = 0xd70000;
       this.rock3.animations.add('ani1', [0, 1, 2, 1], 2, true);
@@ -395,7 +556,7 @@ TheGame.prototype = {
     for (var i = 0; i < gameOptions.number_of_levels; i++)
     {
       level_buttons[i] = game.add.button(
-                              game.width / 10 * (i + 1), game.height / 5 * 2.7,
+                              game.width / 10 * (i + 3), game.height / 5 * 2.7,
                               'levelbuttonface',
                               null,
                               this,
