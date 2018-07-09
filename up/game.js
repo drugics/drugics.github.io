@@ -8,7 +8,7 @@ var gameOptions = {
   gameWidth: 840,
   gameHeight: 420,
   // local storage name, it's the variable we will be using to save game information such as best score
-  localStorageName: "MKKSpace 0.129",
+  localStorageName: "MKKSpace 0.13",
 
 }
 
@@ -537,7 +537,7 @@ TheGame.prototype = {
     this.startScreenGroup.add(blackOverlay);
 
     // adding a bitmap text with game title
-    var titleText = game.add.bitmapText(game.width / 2, game.height / 5, "font", "Up!", 48);
+    var titleText = game.add.bitmapText(game.width / 2, game.height / 5, "font", gameOptions.localStorageName, 48);
 
     // setting titleText anchor point to 0.5 (the centre)
     titleText.anchor.set(0.5);
@@ -560,9 +560,20 @@ TheGame.prototype = {
                               'levelbuttonface',
                               null,
                               this,
-                              0, 1, 2, 3);
-      //I can pass in i and read out from arguments[2]
-      level_buttons[i].events.onInputDown.add(function() { this.actual_level = arguments[2] + 1; this.create();this.gameOn(); console.log(arguments[2]); }, this, 0, i);
+      0, 1, 2, 3);
+
+
+
+      if (i==0 || this.savedData.scores[i-1] != 999999)
+      {
+        //I can pass in i and read out from arguments[2]
+        level_buttons[i].events.onInputDown.add(function() { this.actual_level = arguments[2] + 1; this.create();this.gameOn(); console.log(arguments[2]); }, this, 0, i);
+      }
+      else
+      {
+        level_buttons[i].tint = 0x666666;
+      }
+
       level_buttons[i].anchor.set(0.5, 0.5);
       this.startScreenGroup.add(level_buttons[i]);
       level_texts[i] = level_buttons[i].addChild(game.add.bitmapText(0, 0, "font", (i+1)+'\n\n', 16));
@@ -576,14 +587,13 @@ TheGame.prototype = {
       }
       level_scores[i] = level_buttons[i].addChild(game.add.bitmapText(0, 0, "font", '\n\n' + scoreString, 16));
       level_scores[i].anchor.set(0.5, 0.5);
-      level_scores[i].tint = 0xaeae13;
+      level_scores[i].tint = 0x224422;
+      if (this.savedData.scores[i] <= 50)
+      {
+        level_scores[i].tint = 0xaeae13;
+      }
       level_scores[i].align = "center";
     }
-
-    // last but not least, let's add version text
-    var versionText = game.add.bitmapText(game.width, game.height, "font", gameOptions.localStorageName, 24);
-    versionText.anchor.set(1, 1);
-    this.startScreenGroup.add(versionText);
 
     // waiting for player input, then call gameOn function
     //game.input.onDown.addOnce(this.gameOn, this);
