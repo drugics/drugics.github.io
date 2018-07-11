@@ -8,7 +8,7 @@ var gameOptions = {
   gameWidth: 840,
   gameHeight: 420,
   // local storage name, it's the variable we will be using to save game information such as best score
-  localStorageName: "MKKSpace 0.13",
+  localStorageName: "MKKP-Space 0.13",
 
 }
 
@@ -53,9 +53,10 @@ TheGame.prototype = {
 
     game.load.spritesheet("rock1", "assets/sprites/rock1.svg", 64, 64);
     game.load.spritesheet("rock2", "assets/sprites/rock2.svg", 64, 64);
+    game.load.spritesheet("rock3", "assets/sprites/rock3.svg", 64, 64);
+    game.load.spritesheet("rock4", "assets/sprites/rock4.svg", 64, 64);
     game.load.spritesheet("whitehole", "assets/sprites/whitehole.svg", 256, 256);
     game.load.spritesheet("shine", "assets/sprites/shine.svg", 64, 64);
-    game.load.spritesheet("rock3", "assets/sprites/rock3.svg", 64, 64);
     game.load.image("tile", "assets/sprites/tile.png");
     //game.load.spritesheet('player', 'assets/sprites/spacekutyisprite.png', 32, 32);
     game.load.spritesheet('player', 'assets/sprites/player.svg', 64, 64);
@@ -173,6 +174,26 @@ TheGame.prototype = {
       this.rock3.vy = 0;
       this.rock3.rotational_speed = 0.5;
       this.item_array.push(this.rock3);
+
+      //rock4
+      this.rock4 = game.add.sprite(400, 300, 'rock4', 2);
+      this.rock4.scale.set(0.6);
+      this.rock4.animations.add('ani1', [0], 2, true);
+      this.rock4.play('ani1');
+      this.rock4.anchor.set(0.5);
+
+      this.rock4.shine = game.add.sprite(this.rock4.x, this.rock4.y, 'shine');
+      this.rock4.shine.anchor.set(0.5);
+      this.rock4.shine.scale.x *= 0.6;
+      this.rock4.shine.scale.y *= 0.6;
+
+      this.rock4.is_shrunk = true;
+      this.rock4.radius = 18;
+      this.rock4.mass = 1;
+      this.rock4.vx = 0;
+      this.rock4.vy = 0;
+      this.rock4.rotational_speed = 0.5;
+      this.item_array.push(this.rock4);
 
       // adding the player
       this.thePlayer = game.add.sprite(100, 100, 'player', 2);
@@ -414,6 +435,28 @@ TheGame.prototype = {
       this.rock3.rotational_speed = 0.5;
       this.item_array.push(this.rock3);
 
+
+      //rock4
+      this.rock4 = game.add.sprite(400, 400, 'rock4', 2);
+      this.rock4.scale.set(0.6);
+      this.rock4.animations.add('ani1', [0], 2, true);
+      this.rock4.play('ani1');
+      this.rock4.anchor.set(0.5);
+
+      this.rock4.shine = game.add.sprite(this.rock4.x, this.rock4.y, 'shine');
+      this.rock4.shine.anchor.set(0.5);
+      this.rock4.shine.scale.x *= 0.6;
+      this.rock4.shine.scale.y *= 0.6;
+
+      this.rock4.is_shrunk = true;
+      this.rock4.radius = 18;
+      this.rock4.mass = 1;
+      this.rock4.vx = 0;
+      this.rock4.vy = 0;
+      this.rock4.rotational_speed = 0.5;
+      this.item_array.push(this.rock4);
+
+
       // adding the player
       this.thePlayer = game.add.sprite(100, 100, 'player', 2);
       //this.thePlayer.smoothed = false;
@@ -652,10 +695,10 @@ TheGame.prototype = {
       var isGameOver = true;
       for (var index = 0, len = this.item_array.length; index < len; ++index) {
         var item = this.item_array[index];
-        if (!item.isShrunk){
+        if (!item.is_shrunk){
           //hole
           if ( Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
-              item.isShrunk = true;
+              item.is_shrunk = true;
               this.PTGSound.play();
               s = game.add.tween(item.scale);
               s.to({x: 0.5, y:0.5}, 2000, Phaser.Easing.Linear.None);
