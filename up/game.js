@@ -149,13 +149,13 @@ TheGame.prototype = {
     }
     else if (this.actual_level == 4)
     {
-      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, 1, 0, 0, 1);
-      this.add_rock_to_the_field(300, 100, 'rock2', [0], 2, 1, 0, 0, 1);
-      this.add_rock_to_the_field(400, 100, 'rock3', [0], 2, 1, 0, 0, 1);
-      this.add_rock_to_the_field(400, 300, 'rock4', [0], 2, 0, 0, 0, 1);
-      this.add_rock_to_the_field(500, 100, 'rock1', [0], 2, 0, 0, 0, 1);
-      this.add_rock_to_the_field(600, 100, 'rock2', [0], 2, 0, 0, 0, 1);
-      this.add_rock_to_the_field(700, 100, 'rock3', [0], 2, 2, 0, 0, 1);
+      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, 1, 0, 0, 0.1);
+      this.add_rock_to_the_field(300, 100, 'rock2', [0], 2, 1, 0, 0, 0.1);
+      this.add_rock_to_the_field(400, 100, 'rock3', [0], 2, 1, 0, 0, 0.1);
+      this.add_rock_to_the_field(400, 300, 'rock4', [0], 2, 0, 0, 0, 0.1);
+      this.add_rock_to_the_field(500, 100, 'rock1', [0], 2, 0, 0, 0, 0.1);
+      this.add_rock_to_the_field(600, 100, 'rock2', [0], 2, 0, 0, 0, 0.1);
+      this.add_rock_to_the_field(700, 100, 'rock3', [0], 2, 2, 0, 0, 0.1);
 
 
     }
@@ -176,6 +176,15 @@ TheGame.prototype = {
     this.thePlayer.animations.add('right', [0,1,2,3], 1, true);
     this.thePlayer.play('right');
     this.thePlayer.anchor.set(0.5);
+
+    this.thePlayer.shine = game.add.sprite(this.thePlayer.x, this.thePlayer.y, 'shine',2);
+    this.thePlayer.shine.anchor.set(0.5);
+    this.thePlayer.shine.scale.set(scale);
+    this.thePlayer.shine.nrg = this.thePlayer.shine.addChild(game.add.sprite(-5, -80, "tile"));
+    this.thePlayer.shine.nrg.anchor.set(0.5);
+    this.thePlayer.shine.nrg.scale.x = 0.5;
+    this.thePlayer.shine.nrg.scale.y = 0.1;
+    this.thePlayer.shine.nrg.tint = 0xBB2222;
 
     this.thePlayer.radius = 40 * this.shrink_ratio;
     this.thePlayer.mass = 2;
@@ -297,6 +306,11 @@ TheGame.prototype = {
     rock.shine = game.add.sprite(rock.x, rock.y, 'shine');
     rock.shine.anchor.set(0.5);
     rock.shine.scale.set(scale);
+    rock.shine.nrg = rock.shine.addChild(game.add.sprite(-5, -80, "tile"));
+    rock.shine.nrg.anchor.set(0.5);
+    rock.shine.nrg.scale.x = 0.5;
+    rock.shine.nrg.scale.y = 0.1;
+    rock.shine.nrg.tint = 0xBB2222;
 
     rock.radius = 48 * scale;
     rock.mass = 8 * scale * scale * scale;
@@ -624,7 +638,21 @@ TheGame.prototype = {
   			object_1.vy += object_1_ay;
   			object_2.vx -= object_2_ax;
   			object_2.vy -= object_2_ay;
-        if (!this.bassdrum04.isPlaying){this.bassdrum04.play();}
+        //game logic
+        if (!this.bassdrum04.isPlaying){
+          this.bassdrum04.play();
+          if (object_1.oversize != object_2.oversize)
+          {
+            if (object_1.oversize > object_2.oversize){
+              rob = 0.1;
+            }else{
+              rob = -0.1;
+            }
+
+            object_1.shine.nrg.scale.x += rob;
+            object_2.shine.nrg.scale.x -= rob;
+          }
+        }
   		}
   		else
   		{
