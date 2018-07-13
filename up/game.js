@@ -8,7 +8,7 @@ var gameOptions = {
   gameWidth: 840,
   gameHeight: 420,
   // local storage name, it's the variable we will be using to save game information such as best score
-  localStorageName: "MKKP-Space 0.13",
+  localStorageName: "MKKP-Space 0.14",
 
 }
 
@@ -114,7 +114,7 @@ TheGame.prototype = {
     this.spring_constant = 8;
     this.fast_collision_from_amax = 6; //??tudu
     //trnsformation param
-    this.shrink_ratio = 0.6;
+    this.shrink_ratio = 0.61;
 
 
     //whitehole
@@ -152,7 +152,10 @@ TheGame.prototype = {
       this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, 1, 0, 0, 1);
       this.add_rock_to_the_field(300, 100, 'rock2', [0], 2, 1, 0, 0, 1);
       this.add_rock_to_the_field(400, 100, 'rock3', [0], 2, 1, 0, 0, 1);
-      this.add_rock_to_the_field(400, 300, 'rock4', [0], 2, 1, 0, 0, 1);
+      this.add_rock_to_the_field(400, 300, 'rock4', [0], 2, 0, 0, 0, 1);
+      this.add_rock_to_the_field(500, 100, 'rock1', [0], 2, 0, 0, 0, 1);
+      this.add_rock_to_the_field(600, 100, 'rock2', [0], 2, 0, 0, 0, 1);
+      this.add_rock_to_the_field(700, 100, 'rock3', [0], 2, 2, 0, 0, 1);
 
 
     }
@@ -169,13 +172,12 @@ TheGame.prototype = {
     // adding the player
     this.thePlayer = game.add.sprite(100, 100, 'player', 2);
     this.thePlayer.oversize = 1;
-    //this.thePlayer.smoothed = false;
     this.thePlayer.scale.set(this.shrink_ratio);
     this.thePlayer.animations.add('right', [0,1,2,3], 1, true);
     this.thePlayer.play('right');
     this.thePlayer.anchor.set(0.5);
 
-    this.thePlayer.radius = 42 * this.shrink_ratio;
+    this.thePlayer.radius = 40 * this.shrink_ratio;
     this.thePlayer.mass = 2;
     this.thePlayer.vx = 0;
     this.thePlayer.vy = 0;
@@ -281,9 +283,9 @@ TheGame.prototype = {
     rock = game.add.sprite(place_x, place_y, sprite_name, 2);
 
     if (oversize == 0)
-    {scale = 0.36;}
+    {scale = this.shrink_ratio * this.shrink_ratio;}
     else if (oversize == 1)
-    {scale = 0.6;}
+    {scale = this.shrink_ratio;}
     else if (oversize == 2)
     {scale = 1;}
     rock.oversize = oversize;
@@ -296,7 +298,7 @@ TheGame.prototype = {
     rock.shine.anchor.set(0.5);
     rock.shine.scale.set(scale);
 
-    rock.radius = 42 * scale;
+    rock.radius = 48 * scale;
     rock.mass = 8 * scale * scale * scale;
     rock.vx = v_x;
     rock.vy = v_y;
@@ -358,17 +360,21 @@ TheGame.prototype = {
         if (item.oversize > 0){
           //hole
           if ( Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
-              item.oversize--;
+              oversize = item.oversize;
+              item.oversize = 0;
               this.PTGSound.play();
               s = game.add.tween(item.scale);
-              s.to({x: 0.5, y:0.5}, 2000, Phaser.Easing.Linear.None);
+              s.to({x: this.shrink_ratio * this.shrink_ratio, y:this.shrink_ratio * this.shrink_ratio}, 5000, Phaser.Easing.Linear.None);
               //s.onComplete.addOnce(function(){}, this);
               s.start();
-              item.radius *= 0.5;
-              item.mass *= 0.125;
+              for (i = 0; i < oversize; i++)
+              {
+                item.radius *= this.shrink_ratio;
+                item.mass *= this.shrink_ratio * this.shrink_ratio * this.shrink_ratio;
+              }
               if (item.shine != null){
                 s2 = game.add.tween(item.shine.scale);
-                s2.to({x: 0.5, y:0.5}, 2000, Phaser.Easing.Linear.None);
+                s2.to({x: this.shrink_ratio * this.shrink_ratio, y:this.shrink_ratio * this.shrink_ratio}, 2000, Phaser.Easing.Linear.None);
                 s2.start();
               }
 

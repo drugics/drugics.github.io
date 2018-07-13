@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.2791667"
-     inkscape:cx="102.60887"
-     inkscape:cy="72.128821"
+     inkscape:zoom="6.5583334"
+     inkscape:cx="56.103153"
+     inkscape:cy="120.9217"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -81,6 +81,10 @@
   <defs
      id="defs112">
     <inkscape:path-effect
+       effect="spiro"
+       id="path-effect309"
+       is_visible="true" />
+    <inkscape:path-effect
        is_visible="true"
        id="path-effect163"
        effect="spiro" />
@@ -129,6 +133,16 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#b7c286;fill-opacity:1;stroke:none;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect1684"
+       width="9.6060991"
+       height="11.740788"
+       x="56.819885"
+       y="12.062495"
+       ry="3.6594667"
+       rx="3.659467"
+       transform="rotate(-10.092777)" />
     <path
        inkscape:transform-center-y="-5.1752666"
        inkscape:transform-center-x="-0.8625439"
