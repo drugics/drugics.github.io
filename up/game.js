@@ -46,7 +46,7 @@ TheGame.prototype = {
     // setting the game on maximum scale mode to cover the entire screen
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.scale.pageAlignHorizontally = true;
-    game.scale.pageAlignVertically = true;
+    game.scale.pageAlignVertically = false;
 
     // the game will NOT keep running even when it loses the focus
     game.stage.disableVisibilityChange = false;
