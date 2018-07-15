@@ -116,6 +116,9 @@ TheGame.prototype = {
     //trnsformation param
     this.shrink_ratio = 0.61;
 
+    //we give them health periodically
+    this.health_growing_i = 0;
+    this.check_growth_i = 0;
 
     //whitehole
     this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
@@ -180,8 +183,8 @@ TheGame.prototype = {
     this.thePlayer.shine = game.add.sprite(this.thePlayer.x, this.thePlayer.y, 'shine',2);
     this.thePlayer.shine.anchor.set(0.5);
     this.thePlayer.shine.scale.set(scale);
-    this.thePlayer.shine.nrg = this.thePlayer.shine.addChild(game.add.sprite(-5, -80, "tile"));
-    this.thePlayer.shine.nrg.anchor.set(0.5);
+    this.thePlayer.shine.nrg = this.thePlayer.shine.addChild(game.add.sprite(-32, -80, "tile"));
+    this.thePlayer.shine.nrg.anchor.set(0, 0.5);
     this.thePlayer.shine.nrg.scale.x = 0.5;
     this.thePlayer.shine.nrg.scale.y = 0.1;
     this.thePlayer.shine.nrg.tint = 0xBB2222;
@@ -306,8 +309,8 @@ TheGame.prototype = {
     rock.shine = game.add.sprite(rock.x, rock.y, 'shine');
     rock.shine.anchor.set(0.5);
     rock.shine.scale.set(scale);
-    rock.shine.nrg = rock.shine.addChild(game.add.sprite(-5, -80, "tile"));
-    rock.shine.nrg.anchor.set(0.5);
+    rock.shine.nrg = rock.shine.addChild(game.add.sprite(-32, -80, "tile"));
+    rock.shine.nrg.anchor.set(0, 0.5);
     rock.shine.nrg.scale.x = 0.5;
     rock.shine.nrg.scale.y = 0.1;
     rock.shine.nrg.tint = 0xBB2222;
@@ -318,6 +321,22 @@ TheGame.prototype = {
     rock.vy = v_y;
     rock.rotational_speed = rotational_speed;
     this.item_array.push(rock);
+  },
+
+  // function to shrink an object
+  shrink_item: function(item, shrink_ratio){
+    s = game.add.tween(item.scale);
+    s.to({x: item.scale.x * shrink_ratio, y:item.scale.y * shrink_ratio}, 2000, Phaser.Easing.Linear.None);
+    //s.onComplete.addOnce(function(){}, this);
+    s.start();
+    item.radius *= shrink_ratio;
+    item.mass *= Math.pow(shrink_ratio, 3);
+
+    if (item.shine != null){
+      s2 = game.add.tween(item.shine.scale);
+      s2.to({x: item.shine.scale.x * shrink_ratio, y:item.shine.scale.y * shrink_ratio}, 2000, Phaser.Easing.Linear.None);
+      s2.start();
+    }
   },
 
   // function to be executed at each frame
@@ -371,26 +390,11 @@ TheGame.prototype = {
           item.oversize = 1;
         }
 
-        if (item.oversize > 0){
+        if (item.scale.x > 0.4){
           //hole
-          if ( Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
-              oversize = item.oversize;
-              item.oversize = 0;
+          if ( !this.PTGSound.isPlaying && Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
               this.PTGSound.play();
-              s = game.add.tween(item.scale);
-              s.to({x: this.shrink_ratio * this.shrink_ratio, y:this.shrink_ratio * this.shrink_ratio}, 5000, Phaser.Easing.Linear.None);
-              //s.onComplete.addOnce(function(){}, this);
-              s.start();
-              for (i = 0; i < oversize; i++)
-              {
-                item.radius *= this.shrink_ratio;
-                item.mass *= this.shrink_ratio * this.shrink_ratio * this.shrink_ratio;
-              }
-              if (item.shine != null){
-                s2 = game.add.tween(item.shine.scale);
-                s2.to({x: this.shrink_ratio * this.shrink_ratio, y:this.shrink_ratio * this.shrink_ratio}, 2000, Phaser.Easing.Linear.None);
-                s2.start();
-              }
+              this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 1))
 
           } else {
             isGameOver = false;
@@ -400,6 +404,37 @@ TheGame.prototype = {
       if (isGameOver){
           this.gameOver();
       }
+
+      //give HP
+      this.health_growing_i++;
+      if (this.health_growing_i > 400)
+      {
+        this.health_growing_i = 0;
+        for (var index = 0, len = this.item_array.length; index < len; ++index)
+        {
+          var item = this.item_array[index];
+          item.shine.nrg.scale.x *= 1.1;
+        }
+      }
+
+
+      //check growth
+      this.check_growth_i++;
+      if (this.check_growth_i > 40)
+      {
+        this.check_growth_i = 0;
+        for (var index = 0, len = this.item_array.length; index < len; ++index)
+        {
+          var item = this.item_array[index];
+          if (item.shine.nrg.scale.x > 1)
+          {
+            item.shine.nrg.scale.x = 0.2;
+            this.shrink_item(item, 1 / Math.pow(this.shrink_ratio, 1 / 4))
+          }
+        }
+      }
+
+
     }
   },
 
@@ -499,16 +534,6 @@ TheGame.prototype = {
     // updating localstorage setting score as the min value between current score and saved score
     this.savedData.scores[this.actual_level - 1] = Math.min(this.score, this.savedData.scores[this.actual_level - 1]);
 
-    /*
-    if (this.actual_level == 1)
-    {
-      this.savedData.scores[0] = Math.min(this.score, this.savedData.scores[0]);
-    }
-    else if (this.actual_level == 2)
-    {
-      this.savedData.scores[1] = Math.min(this.score, this.savedData.scores[1]);
-    }
-*/
     this.set_saved_data();
 
     this.isTheGameRunning = false;
@@ -638,17 +663,16 @@ TheGame.prototype = {
   			object_1.vy += object_1_ay;
   			object_2.vx -= object_2_ax;
   			object_2.vy -= object_2_ay;
-        //game logic
+        //game logic bigger object robs
         if (!this.bassdrum04.isPlaying){
           this.bassdrum04.play();
-          if (object_1.oversize != object_2.oversize)
+          if ( object_1.scale.x != object_2.scale.x && object_1.shine.nrg.scale.x > 0.1 && object_2.shine.nrg.scale.x > 0.1)
           {
-            if (object_1.oversize > object_2.oversize){
+            if (object_1.scale.x > object_2.scale.x){
               rob = 0.1;
             }else{
               rob = -0.1;
             }
-
             object_1.shine.nrg.scale.x += rob;
             object_2.shine.nrg.scale.x -= rob;
           }
