@@ -111,7 +111,7 @@ TheGame.prototype = {
     //flying objects
     this.item_array = new Array();
     //physics param
-    this.spring_constant = 8;
+    this.spring_constant = 16;
     this.fast_collision_from_amax = 6; //??tudu
     //trnsformation param
     this.shrink_ratio = 0.61;
@@ -356,7 +356,7 @@ TheGame.prototype = {
       var isGameOver = true;
       for (var index = 0, len = this.item_array.length; index < len; ++index) {
         var item = this.item_array[index];
-        if (item.scale.x > 0.6){
+        if (item.scale.x > 0.3){
           //hole
           if ( !this.PTGSound.isPlaying && Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
               this.PTGSound.play();
@@ -622,7 +622,7 @@ TheGame.prototype = {
   		var object_2_ay = force1_fy /object_2.mass ;
 
   //		if ( Math.max( Math.abs(object_1_ax), Math.abs(object_1_ay), Math.abs(object_2_ax), Math.abs(object_2_ay) ) < this.fast_collision_from_amax )
-    if ( (collision_distance / Math.max( Math.abs(object_1.vx - object_2.vx), Math.abs(object_1.vy - object_2.vy))) > 16)
+    if ( (collision_distance / Math.max( Math.abs(object_1.vx - object_2.vx), Math.abs(object_1.vy - object_2.vy))) > 128)
   		{
   			//"slow" collision derivative modelling
   			object_1.vx += object_1_ax;
@@ -646,17 +646,21 @@ TheGame.prototype = {
   		}
   		else
   		{
-  			//if in leaving phase then return
-  			var t2_distance_x = (object_2.sx + object_2.vx) - (object_1.sx + object_1.vx);
-  			var t2_distance_y = (object_2.sy + object_2.vy) - (object_1.sy + object_1.vy);
-  			var t2_distance = Math.sqrt( Math.pow(t2_distance_x,2) + Math.pow(t2_distance_y,2) ) ;
-  			if (t2_distance + 1 > distance) return;
+        angle_to_rotate_coordinate_system = Math.atan2( distance_x, distance_y );
 
-  			angle_to_rotate_coordinate_system = Math.atan(
-  																distance_x
-  																/
-  																distance_y
-  															);
+  			//if in leaving phase then return
+        angle_of_v_diff =  Math.atan2( object_1.vx - object_2.vx, object_1.vy - object_2.vy );
+        //console.log(angle_to_rotate_coordinate_system +' -- '+ angle_of_v_diff);
+        var angle_diff = Math.abs(angle_to_rotate_coordinate_system - angle_of_v_diff);
+        //console.log(angle_diff);
+        if (angle_diff > Math.PI){angle_diff = 2 * Math.PI - angle_diff;}
+        //console.log(angle_diff);
+  			if ( angle_diff > (Math.PI / 2)  )
+        {
+          //console.log('in leaving phase');
+           return;
+        }
+
 
   			var tmp_cartesian_v_object_1 =  {x: object_1.vx, y: object_1.vy};
   			var tmp_cartesian_v_object_2 =  {x: object_2.vx, y: object_2.vy};
@@ -729,7 +733,7 @@ TheGame.prototype = {
 
   			object_2.vy = tmp_cartesian_v_object_2.y;
 
-        this.sidestick01.play();
+        this.bassdrum04.play();
 
   		}
 
