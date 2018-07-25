@@ -302,7 +302,7 @@ TheGame.prototype = {
     //s.onComplete.addOnce(function(){}, this);
     s.start();
     item.radius *= shrink_ratio;
-    item.mass *= Math.pow(shrink_ratio, 3);
+    item.mass *= Math.pow(shrink_ratio, 2);
 
     if (item.shine != null){
       s2 = game.add.tween(item.shine.scale);
@@ -356,11 +356,11 @@ TheGame.prototype = {
       var isGameOver = true;
       for (var index = 0, len = this.item_array.length; index < len; ++index) {
         var item = this.item_array[index];
-        if (item.scale.x > 0.3){
+        if (item.scale.x > 0.6){
           //hole
           if ( !this.PTGSound.isPlaying && Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
               this.PTGSound.play();
-              this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 1))
+              this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 2))
 
           } else {
             isGameOver = false;
