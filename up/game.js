@@ -115,6 +115,9 @@ TheGame.prototype = {
     this.fast_collision_from_amax = 6; //??tudu
     //trnsformation param
     this.shrink_ratio = 0.61;
+    this.oversize_scale = 0.7;
+    this.nrg_bar_color = 0xCCCCCC;
+    this.nrg_bar_oversize_color = 0xCC0000;
 
     //we give them health periodically
     this.health_growing_i = 0;
@@ -128,46 +131,52 @@ TheGame.prototype = {
 
     if (this.actual_level == 1)
     {
-      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(100, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(200, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(100, 300, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
+      this.add_rock_to_the_field(200, 100, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.5);
+      this.add_rock_to_the_field(100, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
+      this.add_rock_to_the_field(200, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(100, 300, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.2);
 
     }
     else if (this.actual_level == 2)
     {
-      this.add_rock_to_the_field(100, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(150, 300, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(100, 400, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(200, 400, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
+      this.add_rock_to_the_field(100, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(150, 300, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
+      this.add_rock_to_the_field(100, 400, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(200, 400, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.5);
     }
     else if (this.actual_level == 3)
     {
-      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(200, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(200, 300, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(100, 300, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
+      this.add_rock_to_the_field(200, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(200, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.2);
+      this.add_rock_to_the_field(200, 300, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(100, 300, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
 
 
     }
     else if (this.actual_level == 4)
     {
-      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(300, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(400, 100, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(400, 300, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(500, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(600, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(700, 100, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,2), 0, 0, 0.1);
+      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(300, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(400, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(400, 300, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(500, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(600, 100, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(700, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
 
 
     }
     else if (this.actual_level == 5)
     {
-      this.add_rock_to_the_field(300, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(350, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(400, 100, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
-      this.add_rock_to_the_field(400, 300, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 1);
+      this.add_rock_to_the_field(300, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
+      this.add_rock_to_the_field(350, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(400, 300, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
+      this.add_rock_to_the_field(400, 350, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.3);
+      this.add_rock_to_the_field(500, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(600, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(700, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(500, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(600, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(700, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
 
     }
 
@@ -252,6 +261,7 @@ TheGame.prototype = {
         level_scores[i].tint = 0xaeae13;
       }
       level_scores[i].align = "center";
+
     }
 
     // waiting for player input, then call gameOn function
@@ -284,7 +294,12 @@ TheGame.prototype = {
     rock.shine.nrg.anchor.set(0, 0.5);
     rock.shine.nrg.scale.x = 0.5;
     rock.shine.nrg.scale.y = 0.1;
-    rock.shine.nrg.tint = 0xBB2222;
+    if (rock.scale.x > this.oversize_scale){
+      rock.shine.nrg.tint =  this.nrg_bar_oversize_color;
+    } else {
+      rock.shine.nrg.tint =  this.nrg_bar_color;
+    }
+    rock.shine.nrg.alpha = 0.7;
 
     rock.radius = 48 * scale;
     rock.mass = 8 * scale * scale * scale;
@@ -304,10 +319,14 @@ TheGame.prototype = {
     item.radius *= shrink_ratio;
     item.mass *= Math.pow(shrink_ratio, 2);
 
-    if (item.shine != null){
-      s2 = game.add.tween(item.shine.scale);
-      s2.to({x: item.shine.scale.x * shrink_ratio, y:item.shine.scale.y * shrink_ratio}, 2000, Phaser.Easing.Linear.None);
-      s2.start();
+    s2 = game.add.tween(item.shine.scale);
+    s2.to({x: item.shine.scale.x * shrink_ratio, y:item.shine.scale.y * shrink_ratio}, 2000, Phaser.Easing.Linear.None);
+    s2.start();
+    if (item.shine.scale.x * shrink_ratio > this.oversize_scale){
+      // color the nrg bar
+      item.shine.nrg.tint = this.nrg_bar_oversize_color;
+    } else {
+      item.shine.nrg.tint = this.nrg_bar_color;
     }
   },
 
@@ -356,7 +375,7 @@ TheGame.prototype = {
       var isGameOver = true;
       for (var index = 0, len = this.item_array.length; index < len; ++index) {
         var item = this.item_array[index];
-        if (item.scale.x > 0.6){
+        if (item.scale.x > this.oversize_scale){
           //hole
           if ( !this.PTGSound.isPlaying && Math.abs(item.x - this.whitehole.x) < this.whitehole.radius && Math.abs(item.y - this.whitehole.y) < this.whitehole.radius) {
               this.PTGSound.play();
@@ -394,8 +413,25 @@ TheGame.prototype = {
           var item = this.item_array[index];
           if (item.shine.nrg.scale.x > 1)
           {
-            item.shine.nrg.scale.x = 0.2;
-            this.shrink_item(item, 1 / Math.pow(this.shrink_ratio, 1 / 4))
+            if (item.key == 'rock4'){
+              item.shine.nrg.scale.x = 0.6;
+              item.vx *= 3;
+              item.vy *= 3;
+            }else{
+              item.shine.nrg.scale.x = 0.2;
+              this.shrink_item(item, 1 / Math.pow(this.shrink_ratio, 1 / 4))
+            }
+          }
+          if (item.shine.nrg.scale.x < 0.15)
+          {
+            if (item.key == 'rock4'){
+              item.shine.nrg.scale.x = 0.6;
+              item.vx /= 3;
+              item.vy /= 3;
+            }else{
+              item.shine.nrg.scale.x = 0.95;
+              this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 4))
+            }
           }
         }
       }
@@ -629,15 +665,27 @@ TheGame.prototype = {
   			object_1.vy += object_1_ay;
   			object_2.vx -= object_2_ax;
   			object_2.vy -= object_2_ay;
-        //game logic bigger object robs
+        //game logic: bigger object robs smaller...
         if (!this.bassdrum04.isPlaying){
           this.bassdrum04.play();
           if ( object_1.scale.x != object_2.scale.x && object_1.shine.nrg.scale.x > 0.1 && object_2.shine.nrg.scale.x > 0.1)
           {
             if (object_1.scale.x > object_2.scale.x){
-              rob = 0.1;
+              if (object_1.key == 'rock4'
+               || object_1.key == 'rock3'
+               || (object_1.key == 'rock1' && object_2.key == 'rock1')){
+                rob = 0;
+              }else{
+                rob = 0.1;
+              }
             }else{
-              rob = -0.1;
+              if (object_2.key == 'rock4'
+               || object_2.key == 'rock3'
+               || (object_2.key == 'rock1' && object_1.key == 'rock1')){
+                rob = 0;
+              }else{
+                rob = -0.1;
+              }
             }
             object_1.shine.nrg.scale.x += rob;
             object_2.shine.nrg.scale.x -= rob;
