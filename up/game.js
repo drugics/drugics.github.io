@@ -60,6 +60,7 @@ TheGame.prototype = {
     game.load.image("tile", "assets/sprites/tile.png");
     //game.load.spritesheet('player', 'assets/sprites/spacekutyisprite.png', 32, 32);
     game.load.spritesheet('player', 'assets/sprites/player.svg', 128, 128);
+    game.load.spritesheet('jet', 'assets/sprites/jet.svg', 128, 128);
 
 
     // preloading the bitmap font, generated with Littera bitmap font generator
@@ -122,6 +123,7 @@ TheGame.prototype = {
     //we give them health periodically
     this.health_growing_i = 0;
     this.check_growth_i = 0;
+    this.check_robbery_i = 0;
 
     //whitehole
     this.whitehole = game.add.image(gameOptions.gameWidth/2, game.height/2, 'whitehole');
@@ -182,6 +184,10 @@ TheGame.prototype = {
 
     // adding the player
     this.thePlayer = this.add_rock_to_the_field(400, 400, 'player', [0,1,2,3], 1, [1], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0);
+    this.jet = game.add.sprite(this.thePlayer.x, this.thePlayer.y, 'jet', 4);
+    this.jet.anchor.set(0.5);
+    this.jet.scale.set(0.5);
+    this.jet.animations.add('ani1', [0,1,2,3,4], 16, false);
 
     this.actualScoreText = game.add.bitmapText(0, 0, "font", '', 36);
     this.actualScoreText.anchor.set(0, 0);
@@ -214,7 +220,7 @@ TheGame.prototype = {
     this.startScreenGroup.add(titleText);
 
     // same thing goes with infoText
-    var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Select level", 24);
+    var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Help the space veGGies to become small!", 24);
     infoText.anchor.set(0.5, 0.5);
     this.startScreenGroup.add(infoText);
 
@@ -335,19 +341,27 @@ TheGame.prototype = {
     if(this.isTheGameRunning){
       //control the player
       acc = 0.5;
-      if (!this.taikoCSound.isPlaying)
+      if (!this.taikoCSound.isPlaying) //this.jet.frame == 4 &&  no good for timing
       {
         if (upKey.isDown || this.upbuttonpressed == true)
             {
               this.thePlayer.vy-=acc;
               this.score++;
               this.taikoCSound.play();
+              this.jet.x = this.thePlayer.x;
+              this.jet.y = this.thePlayer.y + 64;
+              this.jet.angle = 90;
+              this.jet.play('ani1');
             }
             else if (downKey.isDown || this.downbuttonpressed == true)
             {
               this.thePlayer.vy+=acc;
               this.score++;
               this.taikoCSound.play();
+              this.jet.x = this.thePlayer.x;
+              this.jet.y = this.thePlayer.y - 64;
+              this.jet.angle = -90;
+              this.jet.play('ani1');
             }
 
             if (leftKey.isDown || this.leftbuttonpressed == true)
@@ -355,12 +369,21 @@ TheGame.prototype = {
               this.thePlayer.vx-=acc;
               this.score++;
               this.taikoCSound.play();
+              this.jet.x = this.thePlayer.x + 64;
+              this.jet.y = this.thePlayer.y;
+              this.jet.angle = 0;
+              this.jet.play('ani1');
             }
             else if (rightKey.isDown || this.rightbuttonpressed == true)
             {
               this.thePlayer.vx+=acc;
               this.score++;
               this.taikoCSound.play();
+              this.jet.x = this.thePlayer.x - 64;
+              this.jet.y = this.thePlayer.y;
+              this.jet.angle = 180;
+              this.jet.play('ani1');
+
             }
           }
 
@@ -432,6 +455,24 @@ TheGame.prototype = {
               item.shine.nrg.scale.x = 0.95;
               this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 4))
             }
+          }
+        }
+      }
+
+
+
+      //check robbery
+      this.check_robbery_i++;
+      if (this.check_robbery_i > 30)
+      {
+        this.check_robbery_i = 0;
+
+        for (var index = 0, len = this.item_array.length; index < len; ++index) {
+          var item = this.item_array[index];
+          for (var indexAffector = index + 1; indexAffector < len; ++indexAffector) {
+            var itemAffector = this.item_array[indexAffector];
+
+            this.logical_interaction(item, itemAffector);
           }
         }
       }
@@ -633,8 +674,45 @@ TheGame.prototype = {
 
 
       }
-
     },
+
+  // interactions
+  //--------------------------------------------------------------------------------------------
+  logical_interaction: function(object_1, object_2){
+
+    var distance_x = object_2.x-object_1.x;
+  	var distance_y = object_2.y-object_1.y;
+  	var distance = Math.sqrt( Math.pow(distance_x,2) + Math.pow(distance_y,2) ) ;
+  	var collision_distance = ( object_1.radius + object_2.radius ) * 1.2;
+
+  	if( distance != 0	&& distance < collision_distance ) // touch
+  	{
+      //game logic: bigger object robs smaller...
+      if ( object_1.scale.x != object_2.scale.x && object_1.shine.nrg.scale.x > 0.1 && object_2.shine.nrg.scale.x > 0.1)
+      {
+        if (object_1.scale.x > object_2.scale.x){
+          if (object_1.key == 'rock4'
+           || object_1.key == 'rock3'
+           || (object_1.key == 'rock1' && object_2.key == 'rock1')){
+            rob = 0;
+          }else{
+            rob = 0.1;
+          }
+        }else{
+          if (object_2.key == 'rock4'
+           || object_2.key == 'rock3'
+           || (object_2.key == 'rock1' && object_1.key == 'rock1')){
+            rob = 0;
+          }else{
+            rob = -0.1;
+          }
+        }
+        object_1.shine.nrg.scale.x += rob;
+        object_2.shine.nrg.scale.x -= rob;
+      }
+
+    }
+  },
 
   // collisions
   //--------------------------------------------------------------------------------------------
@@ -668,28 +746,6 @@ TheGame.prototype = {
         //game logic: bigger object robs smaller...
         if (!this.bassdrum04.isPlaying){
           this.bassdrum04.play();
-          if ( object_1.scale.x != object_2.scale.x && object_1.shine.nrg.scale.x > 0.1 && object_2.shine.nrg.scale.x > 0.1)
-          {
-            if (object_1.scale.x > object_2.scale.x){
-              if (object_1.key == 'rock4'
-               || object_1.key == 'rock3'
-               || (object_1.key == 'rock1' && object_2.key == 'rock1')){
-                rob = 0;
-              }else{
-                rob = 0.1;
-              }
-            }else{
-              if (object_2.key == 'rock4'
-               || object_2.key == 'rock3'
-               || (object_2.key == 'rock1' && object_1.key == 'rock1')){
-                rob = 0;
-              }else{
-                rob = -0.1;
-              }
-            }
-            object_1.shine.nrg.scale.x += rob;
-            object_2.shine.nrg.scale.x -= rob;
-          }
         }
   		}
   		else
