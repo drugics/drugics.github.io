@@ -685,31 +685,39 @@ TheGame.prototype = {
   	var distance = Math.sqrt( Math.pow(distance_x,2) + Math.pow(distance_y,2) ) ;
   	var collision_distance = ( object_1.radius + object_2.radius ) * 1.2;
 
+
   	if( distance != 0	&& distance < collision_distance ) // touch
   	{
       //game logic: bigger object robs smaller...
-      if ( object_1.scale.x != object_2.scale.x && object_1.shine.nrg.scale.x > 0.1 && object_2.shine.nrg.scale.x > 0.1)
-      {
-        if (object_1.scale.x > object_2.scale.x){
-          if (object_1.key == 'rock4'
-           || object_1.key == 'rock3'
-           || (object_1.key == 'rock1' && object_2.key == 'rock1')){
-            rob = 0;
-          }else{
-            rob = 0.1;
-          }
-        }else{
-          if (object_2.key == 'rock4'
-           || object_2.key == 'rock3'
-           || (object_2.key == 'rock1' && object_1.key == 'rock1')){
-            rob = 0;
-          }else{
-            rob = -0.1;
-          }
-        }
-        object_1.shine.nrg.scale.x += rob;
-        object_2.shine.nrg.scale.x -= rob;
+      if (object_1.scale.x > object_2.scale.x){
+        var bigger = object_1;
+        var smaller = object_2;
+      }else{
+        var bigger = object_2;
+        var smaller = object_1;
       }
+      if (smaller.shine.nrg.scale.x > 0.1)
+      {
+        if (bigger.key == 'rock4'
+              || bigger.key == 'rock3'
+              || (bigger.key == 'rock1' && smaller.key == 'rock1'))
+        {
+          // no robbery
+        }
+        else
+        {
+          bigger.shine.nrg.scale.x += 0.05 / bigger.mass * smaller.mass;
+          smaller.shine.nrg.scale.x -= 0.05;
+          var tile = game.add.sprite(smaller.x, smaller.y, "tile");
+          tile.anchor.set(0.5);
+          tile.scale.set(0.2)
+          var tween = game.add.tween(tile);
+          tween.to({x: bigger.x, y: bigger.y}, 400, Phaser.Easing.Linear.None);
+          tween.onComplete.addOnce(function(){tile.kill()}, this);
+          tween.start();
+        }
+      }
+
 
     }
   },
