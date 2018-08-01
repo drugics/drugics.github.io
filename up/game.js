@@ -689,33 +689,56 @@ TheGame.prototype = {
   	if( distance != 0	&& distance < collision_distance ) // touch
   	{
       //game logic: bigger object robs smaller...
-      if (object_1.scale.x > object_2.scale.x){
+
+      if (Math.abs(object_1.scale.x - object_2.scale.x) < (object_1.scale.x * 0.1))
+      {
+        //too small diff
+        return;
+      }
+
+      if (object_1.scale.x > object_2.scale.x)
+      {
         var bigger = object_1;
         var smaller = object_2;
       }else{
         var bigger = object_2;
         var smaller = object_1;
       }
+
+      var loot = 0.05;
+
       if (smaller.shine.nrg.scale.x > 0.1)
       {
-        if (bigger.key == 'rock4'
-              || bigger.key == 'rock3'
-              || (bigger.key == 'rock1' && smaller.key == 'rock1'))
+        if ( bigger.key == 'rock3'
+            ||  (bigger.key == 'rock4' || bigger.key == 'player') && (smaller.key == 'rock1' || smaller.key == 'rock2'|| smaller.key == 'rock3')
+            )
         {
           // no robbery
+          return;
         }
-        else
+
+        if ( (bigger.key == 'rock4' || bigger.key == 'player') && (smaller.key == 'rock4' || smaller.key == 'player') )
         {
-          bigger.shine.nrg.scale.x += 0.05 / bigger.mass * smaller.mass;
-          smaller.shine.nrg.scale.x -= 0.05;
-          var tile = game.add.sprite(smaller.x, smaller.y, "tile");
-          tile.anchor.set(0.5);
-          tile.scale.set(0.2)
-          var tween = game.add.tween(tile);
-          tween.to({x: bigger.x, y: bigger.y}, 400, Phaser.Easing.Linear.None);
-          tween.onComplete.addOnce(function(){tile.kill()}, this);
-          tween.start();
+          // help the smaller
+          var swp = bigger;
+          bigger = smaller;
+          smaller = swp;
         }
+        else if ( bigger.key == 'rock1' && smaller.key == 'rock1' )
+        {
+          // friendly robbery :)
+          loot *= 0.5;
+        }
+        bigger.shine.nrg.scale.x += loot / bigger.mass * smaller.mass;
+        smaller.shine.nrg.scale.x -= loot;
+        var tile = game.add.sprite(smaller.x, smaller.y, "tile");
+        tile.anchor.set(0.5);
+        tile.scale.set(0.2)
+        var tween = game.add.tween(tile);
+        tween.to({x: bigger.x, y: bigger.y}, 400, Phaser.Easing.Linear.None);
+        tween.onComplete.addOnce(function(){tile.kill()}, this);
+        tween.start();
+
       }
 
 
