@@ -57,6 +57,7 @@ TheGame.prototype = {
     game.load.spritesheet("rock4", "assets/sprites/rock4.svg", 128, 128);
     game.load.spritesheet("whitehole", "assets/sprites/whitehole.svg", 256, 256);
     game.load.spritesheet("shine", "assets/sprites/shine.svg", 128, 128);
+    game.load.spritesheet("nrg", "assets/sprites/nrg.svg", 32, 32);
     game.load.image("tile", "assets/sprites/tile.png");
     //game.load.spritesheet('player', 'assets/sprites/spacekutyisprite.png', 32, 32);
     game.load.spritesheet('player', 'assets/sprites/player.svg', 128, 128);
@@ -731,12 +732,13 @@ TheGame.prototype = {
         }
         bigger.shine.nrg.scale.x += loot / bigger.mass * smaller.mass;
         smaller.shine.nrg.scale.x -= loot;
-        var tile = game.add.sprite(smaller.x, smaller.y, "tile");
-        tile.anchor.set(0.5);
-        tile.scale.set(0.2)
-        var tween = game.add.tween(tile);
+        var nrg = game.add.sprite(smaller.x, smaller.y, "nrg");
+        nrg.anchor.set(0.5);
+        nrg.scale.set(16 * loot);
+        nrg.angle = Math.random() * 360;
+        var tween = game.add.tween(nrg);
         tween.to({x: bigger.x, y: bigger.y}, 400, Phaser.Easing.Linear.None);
-        tween.onComplete.addOnce(function(){tile.kill()}, this);
+        tween.onComplete.addOnce(function(){nrg.kill()}, this);
         tween.start();
 
       }
