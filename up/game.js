@@ -119,7 +119,8 @@ TheGame.prototype = {
     this.shrink_ratio = 0.61;
     this.oversize_scale = 0.7;
     this.nrg_bar_color = 0xCCCCCC;
-    this.nrg_bar_oversize_color = 0xCC0000;
+    this.size_bar_color = 0xCCCCCC;
+    this.size_bar_oversize_color = 0xCC0000;
 
     //we give them health periodically
     this.health_growing_i = 0;
@@ -284,8 +285,14 @@ TheGame.prototype = {
 
   add_rock_to_the_field(place_x, place_y, sprite_name, frame_array, frame_rate, shine_frame_array, shine_frame_rate, scale, v_x, v_y, rotational_speed)
   {
-
     rock = game.add.sprite(place_x, place_y, sprite_name, 2);
+
+    rock.radius = 48 * scale;
+    rock.mass = 8 * scale * scale * scale;
+    rock.vx = v_x;
+    rock.vy = v_y;
+    rock.rotational_speed = rotational_speed;
+    this.item_array.push(rock);
 
     rock.scale.set(scale);
     rock.anchor.set(0.5);
@@ -301,33 +308,35 @@ TheGame.prototype = {
     rock.shine.nrg.anchor.set(0, 0.5);
     rock.shine.nrg.scale.x = 0.5;
     rock.shine.nrg.scale.y = 0.1;
-    if (rock.scale.x > this.oversize_scale){
-      rock.shine.nrg.tint =  this.nrg_bar_oversize_color;
-    } else {
-      rock.shine.nrg.tint =  this.nrg_bar_color;
-    }
+    rock.shine.nrg.tint =  this.nrg_bar_color;
     rock.shine.nrg.alpha = 0.7;
 
-    rock.radius = 48 * scale;
-    rock.mass = 8 * scale * scale * scale;
-    rock.vx = v_x;
-    rock.vy = v_y;
-    rock.rotational_speed = rotational_speed;
-    this.item_array.push(rock);
+    rock.shine.size = rock.shine.addChild(game.add.sprite(-32, -70, "tile"));
+    rock.shine.size.anchor.set(0, 0.5);
+    rock.shine.size.scale.x = rock.radius / 48;
+    rock.shine.size.scale.y = 0.1;
+    if (rock.scale.x > this.oversize_scale){
+      rock.shine.size.tint =  this.size_bar_oversize_color;
+    } else {
+      rock.shine.size.tint =  this.size_bar_color;
+    }
+    rock.shine.size.alpha = 0.7;
+
     return rock;
   },
 
   // function to shrink an object
   shrink_item: function(item, shrink_ratio){
     s = game.add.tween(item.scale);
-    s.to({x: item.scale.x * shrink_ratio, y:item.scale.y * shrink_ratio}, 2000, Phaser.Easing.Linear.None);
+    s.to({x: item.scale.x * shrink_ratio, y:item.scale.y * shrink_ratio}, 1000, Phaser.Easing.Linear.None);
     //s.onComplete.addOnce(function(){}, this);
     s.start();
     item.radius *= shrink_ratio;
-    item.mass *= Math.pow(shrink_ratio, 2);
+    item.mass *= Math.pow(shrink_ratio, 3);
+    item.shine.size.scale.x *= shrink_ratio;
 
     s2 = game.add.tween(item.shine.scale);
-    s2.to({x: item.shine.scale.x * shrink_ratio, y:item.shine.scale.y * shrink_ratio}, 2000, Phaser.Easing.Linear.None);
+    s2.to({x: item.shine.scale.x * shrink_ratio, y:item.shine.scale.y * shrink_ratio}, 1000, Phaser.Easing.Linear.None);
     s2.start();
     if (item.shine.scale.x * shrink_ratio > this.oversize_scale){
       // color the nrg bar
@@ -437,25 +446,13 @@ TheGame.prototype = {
           var item = this.item_array[index];
           if (item.shine.nrg.scale.x > 1)
           {
-            if (item.key == 'rock4'){
-              item.shine.nrg.scale.x = 0.6;
-              item.vx *= 3;
-              item.vy *= 3;
-            }else{
-              item.shine.nrg.scale.x = 0.2;
-              this.shrink_item(item, 1 / Math.pow(this.shrink_ratio, 1 / 4))
-            }
+            item.shine.nrg.scale.x = 0.2;
+            this.shrink_item(item, 1 / Math.pow(this.shrink_ratio, 1 / 4))
           }
           if (item.shine.nrg.scale.x < 0.15)
           {
-            if (item.key == 'rock4'){
-              item.shine.nrg.scale.x = 0.6;
-              item.vx /= 3;
-              item.vy /= 3;
-            }else{
-              item.shine.nrg.scale.x = 0.95;
-              this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 4))
-            }
+            item.shine.nrg.scale.x = 0.95;
+            this.shrink_item(item, Math.pow(this.shrink_ratio, 1 / 4))
           }
         }
       }
