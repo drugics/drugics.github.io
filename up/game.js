@@ -222,7 +222,7 @@ TheGame.prototype = {
     this.startScreenGroup.add(titleText);
 
     // same thing goes with infoText
-    var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Help the space veGGies to become small!", 24);
+    var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Help the space veGGies become small!", 24);
     infoText.anchor.set(0.5, 0.5);
     this.startScreenGroup.add(infoText);
 
