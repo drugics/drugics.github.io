@@ -114,13 +114,12 @@ TheGame.prototype = {
     this.item_array = new Array();
     //physics param
     this.spring_constant = 16;
-    this.fast_collision_from_amax = 6; //??tudu
     //trnsformation param
     this.shrink_ratio = 0.61;
     this.oversize_scale = 0.7;
-    this.nrg_bar_color = 0xCCCCCC;
-    this.size_bar_color = 0xCCCCCC;
-    this.size_bar_oversize_color = 0xCC0000;
+    this.nrg_bar_color = 0xCC0000;
+    this.size_bar_color = 0xDDDDDD;
+    this.size_bar_oversize_color = 0x333333;
 
     //we give them health periodically
     this.health_growing_i = 0;
@@ -304,14 +303,14 @@ TheGame.prototype = {
     rock.shine.play('ani1');
     rock.shine.anchor.set(0.5);
     rock.shine.scale.set(scale);
-    rock.shine.nrg = rock.shine.addChild(game.add.sprite(-32, -80, "tile"));
+    rock.shine.nrg = rock.shine.addChild(game.add.sprite(-32, -60, "tile"));
     rock.shine.nrg.anchor.set(0, 0.5);
     rock.shine.nrg.scale.x = 0.5;
     rock.shine.nrg.scale.y = 0.1;
     rock.shine.nrg.tint =  this.nrg_bar_color;
     rock.shine.nrg.alpha = 0.7;
 
-    rock.shine.size = rock.shine.addChild(game.add.sprite(-32, -70, "tile"));
+    rock.shine.size = rock.shine.addChild(game.add.sprite(-32, -50, "tile"));
     rock.shine.size.anchor.set(0, 0.5);
     rock.shine.size.scale.x = rock.radius / 48;
     rock.shine.size.scale.y = 0.1;
@@ -339,10 +338,10 @@ TheGame.prototype = {
     s2.to({x: item.shine.scale.x * shrink_ratio, y:item.shine.scale.y * shrink_ratio}, 1000, Phaser.Easing.Linear.None);
     s2.start();
     if (item.shine.scale.x * shrink_ratio > this.oversize_scale){
-      // color the nrg bar
-      item.shine.nrg.tint = this.nrg_bar_oversize_color;
+      // color the size bar
+      item.shine.size.tint = this.size_bar_oversize_color;
     } else {
-      item.shine.nrg.tint = this.nrg_bar_color;
+      item.shine.size.tint = this.size_bar_color;
     }
   },
 
