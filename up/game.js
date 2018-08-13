@@ -8,7 +8,7 @@ var gameOptions = {
   gameWidth: 840,
   gameHeight: 420,
   // local storage name, it's the variable we will be using to save game information such as best score
-  localStorageName: "MKKP-Space 0.14",
+  localStorageName: "MKKP-Space 0.15",
 
 }
 
@@ -113,7 +113,7 @@ TheGame.prototype = {
     //flying objects
     this.item_array = new Array();
     //physics param
-    this.spring_constant = 16;
+    this.spring_constant = 0.25;
     //trnsformation param
     this.shrink_ratio = 0.61;
     this.oversize_scale = 0.7;
@@ -144,8 +144,8 @@ TheGame.prototype = {
     {
       this.add_rock_to_the_field(100, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
       this.add_rock_to_the_field(150, 300, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
-      this.add_rock_to_the_field(100, 400, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
-      this.add_rock_to_the_field(200, 400, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.5);
+      this.add_rock_to_the_field(100, 300, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(200, 300, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.5);
     }
     else if (this.actual_level == 3)
     {
@@ -184,7 +184,7 @@ TheGame.prototype = {
     }
 
     // adding the player
-    this.thePlayer = this.add_rock_to_the_field(400, 400, 'player', [0,1,2,3], 1, [1], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0);
+    this.thePlayer = this.add_rock_to_the_field(400, 300, 'player', [0,1,2,3], 1, [1], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0);
     this.jet = game.add.sprite(this.thePlayer.x, this.thePlayer.y, 'jet', 4);
     this.jet.anchor.set(0.5);
     this.jet.scale.set(0.5);
@@ -325,7 +325,14 @@ TheGame.prototype = {
   },
 
   // function to shrink an object
-  shrink_item: function(item, shrink_ratio){
+  shrink_item: function(item, shrink_ratio)
+  {
+    if (item.scale.x * shrink_ratio > 1) //split
+    {
+      this.add_rock_to_the_field(item.x-50, item.y-50, item.key, [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.5);
+      return;
+    }
+
     s = game.add.tween(item.scale);
     s.to({x: item.scale.x * shrink_ratio, y:item.scale.y * shrink_ratio}, 1000, Phaser.Easing.Linear.None);
     //s.onComplete.addOnce(function(){}, this);
@@ -343,6 +350,7 @@ TheGame.prototype = {
     } else {
       item.shine.size.tint = this.size_bar_color;
     }
+
   },
 
   // function to be executed at each frame
@@ -639,16 +647,16 @@ TheGame.prototype = {
         //..gravity, friction...
 
         // wall
-        if (item.x > game.width) {
-          item.vx = -Math.abs(item.vx)*0.8;
-        } else if (item.x < 0) {
-          item.vx = Math.abs(item.vx)*0.8;
+        if (item.x + item.radius > game.width) {
+          item.vx -= this.spring_constant * (item.x + item.radius - game.width);
+        } else if (item.x - item.radius < 0) {
+          item.vx -= this.spring_constant * (item.x - item.radius);
         }
 
-        if (item.y > game.height) {
-          item.vy = -Math.abs(item.vy)*0.8;
-        } else if (item.y < 0) {
-          item.vy = Math.abs(item.vy)*0.8;
+        if (item.y + item.radius > game.height) {
+          item.vy -= this.spring_constant * (item.y + item.radius - game.height);
+        } else if (item.y - item.radius < 0) {
+          item.vy -= this.spring_constant * (item.y - item.radius);
         }
 
         //friction
@@ -772,10 +780,11 @@ TheGame.prototype = {
   			object_1.vy += object_1_ay;
   			object_2.vx -= object_2_ax;
   			object_2.vy -= object_2_ay;
-        //game logic: bigger object robs smaller...
-        if (!this.bassdrum04.isPlaying){
-          this.bassdrum04.play();
-        }
+
+//  ?? sound for slow collision
+//        if (!this.bassdrum04.isPlaying){
+//            this.bassdrum04.play();
+//        }
   		}
   		else
   		{
