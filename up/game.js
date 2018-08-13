@@ -329,7 +329,7 @@ TheGame.prototype = {
   {
     if (item.scale.x * shrink_ratio > 1) //split
     {
-      this.add_rock_to_the_field(item.x-50, item.y-50, item.key, [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.5);
+      this.add_rock_to_the_field(item.x, item.y, item.key, [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), item.vx, item.vy, item.rotational_speed);
       return;
     }
 
@@ -732,7 +732,7 @@ TheGame.prototype = {
         else if ( bigger.key == 'rock1' && smaller.key == 'rock1' )
         {
           // friendly robbery :)
-          loot *= 0.5;
+          loot *= 0.25;
         }
         bigger.shine.nrg.scale.x += loot / bigger.mass * smaller.mass;
         smaller.shine.nrg.scale.x -= loot;
