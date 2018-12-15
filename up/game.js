@@ -5,8 +5,8 @@ var game;
 var gameOptions = {
   number_of_levels : 5,
   // game width
-  gameWidth: 840,
-  gameHeight: 420,
+  gameWidth: 420,
+  gameHeight: 700,
   // local storage name, it's the variable we will be using to save game information such as best score
   localStorageName: "MKKP-Space 0.15",
 
