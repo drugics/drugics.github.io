@@ -8,7 +8,7 @@ var gameOptions = {
   gameWidth: 420,
   gameHeight: 700,
   // local storage name, it's the variable we will be using to save game information such as best score
-  localStorageName: "MKKP-Space 0.15",
+  localStorageName: "UP 0.15",
 
 }
 
@@ -149,42 +149,42 @@ TheGame.prototype = {
     }
     else if (this.actual_level == 3)
     {
-      this.add_rock_to_the_field(200, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(100, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
       this.add_rock_to_the_field(200, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.2);
-      this.add_rock_to_the_field(200, 300, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
-      this.add_rock_to_the_field(100, 300, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(300, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field(300, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
 
 
     }
     else if (this.actual_level == 4)
     {
-      this.add_rock_to_the_field(200, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
-      this.add_rock_to_the_field(300, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
-      this.add_rock_to_the_field(400, 100, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
-      this.add_rock_to_the_field(400, 300, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
-      this.add_rock_to_the_field(500, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(600, 100, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(700, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(100, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(100, 300, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(100, 400, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(300, 400, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.1);
+      this.add_rock_to_the_field(100, 500, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(100, 600, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(100, 650, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
 
 
     }
     else if (this.actual_level == 5)
     {
-      this.add_rock_to_the_field(300, 100, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
-      this.add_rock_to_the_field(350, 200, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
-      this.add_rock_to_the_field(400, 300, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
-      this.add_rock_to_the_field(400, 350, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.3);
-      this.add_rock_to_the_field(500, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(600, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(700, 100, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(500, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(600, 200, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
-      this.add_rock_to_the_field(700, 200, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field( 50,  50, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
+      this.add_rock_to_the_field( 50, 150, 'rock2', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.3);
+      this.add_rock_to_the_field( 50, 250, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,0), 0, 0, 0.4);
+      this.add_rock_to_the_field(150,  50, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.3);
+      this.add_rock_to_the_field(150, 150, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(150, 250, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(250,  50, 'rock4', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(250, 150, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(250, 250, 'rock3', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
+      this.add_rock_to_the_field(250, 350, 'rock1', [0], 2, [0], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0.1);
 
     }
 
     // adding the player
-    this.thePlayer = this.add_rock_to_the_field(400, 300, 'player', [0,1,2,3], 1, [1], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0);
+    this.thePlayer = this.add_rock_to_the_field(210, 600, 'player', [0,1,2,3], 1, [1], 2, Math.pow(this.shrink_ratio,1), 0, 0, 0);
     this.jet = game.add.sprite(this.thePlayer.x, this.thePlayer.y, 'jet', 4);
     this.jet.anchor.set(0.5);
     this.jet.scale.set(0.5);
@@ -221,7 +221,7 @@ TheGame.prototype = {
     this.startScreenGroup.add(titleText);
 
     // same thing goes with infoText
-    var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Help the space veGGies become small!", 24);
+    var infoText = game.add.bitmapText(game.width / 2, game.height / 5 * 2, "font", "Vortex Turmix!", 24);
     infoText.anchor.set(0.5, 0.5);
     this.startScreenGroup.add(infoText);
 
@@ -231,7 +231,7 @@ TheGame.prototype = {
     for (var i = 0; i < gameOptions.number_of_levels; i++)
     {
       level_buttons[i] = game.add.button(
-                              game.width / 10 * (i + 3), game.height / 5 * 2.7,
+                              game.width / 7 * (i + 1), game.height / 5 * 2.7,
                               'levelbuttonface',
                               null,
                               this,
